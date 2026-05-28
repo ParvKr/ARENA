@@ -46,103 +46,109 @@ export function NavBar() {
         ease: 'easeOut',
         delay: 0.2,
       }}
-      className={[
-        'fixed top-0 left-0 right-0 z-50 h-16',
-        'flex items-center justify-between px-6',
-        'border-b border-arena-border',
-        'transition-all duration-300',
+      className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 ${
         scrolled || !isSprintPage
-          ? 'bg-arena-bg/90 backdrop-blur-md'
-          : 'bg-transparent border-transparent',
-      ].join(' ')}
+          ? 'bg-[#0A0A0F]/80 backdrop-blur-xl border-b border-white/10'
+          : 'bg-transparent border-transparent'
+      }`}
     >
-      {/* Logo */}
-      <Link
-        href="/"
-        className="font-display font-extrabold text-xl text-arena-red tracking-wider hover:opacity-80 transition-opacity"
-      >
-        ARENA
-      </Link>
+      <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="font-display font-black text-2xl bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent hover:opacity-80 transition-opacity tracking-tighter"
+        >
+          ARENA
+        </Link>
 
-      {/* Center — countdown on sprint page, nav links elsewhere */}
-      <div className="flex items-center gap-6">
-        {/* Logical Fix 1: Maps directly to authoritative close_at database schemas */}
-        {isSprintPage && sprint?.close_at ? (
-          <CountdownTimer
-            targetDate={sprint.close_at}
-            compact
-          />
-        ) : isJudge ? (
-          <Link
-            href="/judge"
-            className={navLinkClass('/judge', pathname)}
-          >
-            Judge Dashboard
-          </Link>
-        ) : (
-          <>
-            <Link
-              href="/sprint"
-              className={navLinkClass('/sprint', pathname)}
-            >
-              Sprint
-            </Link>
-
-            {!isJudge && (
-              <Link
-                href="/results"
-                className={navLinkClass('/results', pathname)}
-              >
-                Results
-              </Link>
-            )}
-
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className={navLinkClass('/admin', pathname)}
-              >
-                Admin
-              </Link>
-            )}
-          </>
-        )}
-      </div>
-
-      {/* Right — auth / profile */}
-      <div className="flex items-center gap-3">
-        {user ? (
-          <>
-            <RankBadge
-              tier={user.rank_tier}
-              size="sm"
+        {/* Center — countdown on sprint page, nav links elsewhere */}
+        <div className="hidden md:flex items-center gap-8">
+          {isSprintPage && sprint?.close_at ? (
+            <CountdownTimer
+              targetDate={sprint.close_at}
+              compact
             />
+          ) : isJudge ? (
+            <Link
+              href="/judge"
+              className={navLinkClass('/judge', pathname)}
+            >
+              Judge
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/sprint"
+                className={navLinkClass('/sprint', pathname)}
+              >
+                Sprint
+              </Link>
 
-            <Link
-              href={`/profile/${user.username}`}
-              className="w-8 h-8 rounded-full bg-arena-surface border border-arena-border flex items-center justify-center text-xs font-display font-bold text-arena-gray hover:border-arena-red transition-colors"
-            >
-              {/* Logical Fix 2: Optional chaining prevents string evaluation crashes */}
-              {user.username?.[0]?.toUpperCase() ?? 'U'}
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link
-              href="/signin"
-              className="text-sm text-arena-gray hover:text-arena-offwhite transition-colors"
-            >
-              Sign in
-            </Link>
+              {!isJudge && (
+                <Link
+                  href="/results"
+                  className={navLinkClass('/results', pathname)}
+                >
+                  Results
+                </Link>
+              )}
 
-            <Link
-              href="/signup"
-              className="text-sm px-4 py-1.5 bg-arena-red text-white font-semibold rounded hover:bg-red-500 transition-colors"
-            >
-              Sign up
-            </Link>
-          </>
-        )}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className={navLinkClass('/admin', pathname)}
+                >
+                  Admin
+                </Link>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Right — auth / profile */}
+        <div className="flex items-center gap-4">
+          {user ? (
+            <>
+              <RankBadge
+                tier={user.rank_tier}
+                size="sm"
+              />
+
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href={`/profile/${user.username}`}
+                  className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center text-xs font-display font-black text-white hover:shadow-lg hover:shadow-cyan-500/40 transition-all border border-white/10"
+                >
+                  {user.username?.[0]?.toUpperCase() ?? 'U'}
+                </Link>
+              </motion.div>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/signin"
+                className="hidden sm:inline text-sm text-gray-400 hover:text-white transition-colors font-medium"
+              >
+                Sign in
+              </Link>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href="/signup"
+                  className="text-sm px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+                >
+                  Sign up
+                </Link>
+              </motion.div>
+            </>
+          )}
+        </div>
       </div>
     </motion.nav>
   );
@@ -157,9 +163,9 @@ function navLinkClass(
     pathname.startsWith(href + '/');
 
   return [
-    'text-sm font-medium transition-colors duration-150 pb-0.5',
+    'text-sm font-semibold transition-all duration-200 pb-2 border-b-2',
     active
-      ? 'text-arena-white border-b-2 border-arena-red'
-      : 'text-arena-gray hover:text-arena-offwhite',
+      ? 'text-cyan-400 border-cyan-400'
+      : 'text-gray-400 border-transparent hover:text-white hover:border-white/20',
   ].join(' ');
 }

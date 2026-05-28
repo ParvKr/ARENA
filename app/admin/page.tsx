@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import type { ArenaRole, SprintStatus } from '@/types/api.types';
@@ -16,10 +17,10 @@ type AdminSprintRow = {
 };
 
 const statusClasses: Record<SprintStatus, string> = {
-  draft: 'border-arena-border text-arena-gray',
-  live: 'border-arena-green/40 bg-arena-green-dim text-arena-green',
-  judging: 'border-arena-cyan/40 bg-arena-cyan-dim text-arena-cyan',
-  complete: 'border-arena-gold/40 bg-arena-gold-dim text-arena-gold',
+  draft: 'border-gray-500/30 bg-gray-500/10 text-gray-400',
+  live: 'border-red-500/50 bg-red-500/10 text-red-400 animate-pulse',
+  judging: 'border-cyan-500/50 bg-cyan-500/10 text-cyan-400',
+  complete: 'border-green-500/50 bg-green-500/10 text-green-400',
 };
 
 export default async function AdminPage() {
@@ -64,73 +65,86 @@ export default async function AdminPage() {
   const sprints = (recentSprints ?? []) as AdminSprintRow[];
 
   return (
-    <div className="min-h-screen bg-arena-bg px-4 pb-12 pt-24 text-arena-offwhite sm:px-6">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8">
-        <header className="border-b border-arena-border pb-6">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-arena-red">
-              Admin Console
-            </p>
-            <h1 className="mt-2 font-display text-3xl font-extrabold text-arena-white sm:text-4xl">
-              Arena Operations
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-arena-gray">
-              Welcome back, {profile?.display_name ?? 'admin'}.
-            </p>
-          </div>
-        </header>
-
-        <section className="grid gap-4 sm:grid-cols-3">
-          <MetricCard label="Sprints" value={sprintCount ?? 0} />
-          <MetricCard label="Submissions" value={submissionCount ?? 0} />
-          <MetricCard label="Judges" value={judgeCount ?? 0} />
-        </section>
-
-        <section className="overflow-hidden rounded-md border border-arena-border bg-arena-card">
-          <div className="flex items-center justify-between border-b border-arena-border px-5 py-4">
-            <h2 className="font-display text-lg font-bold text-arena-white">
-              Recent Sprints
-            </h2>
+    <div className="min-h-screen bg-[#0A0A0F] px-4 pb-16 pt-24">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12">
+        {/* Header */}
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold uppercase tracking-widest">
+              Admin
+            </span>
+            <span className="font-mono text-xs text-gray-500">Control Panel</span>
           </div>
 
-          <div className="divide-y divide-arena-border">
-            {sprints.length > 0 ? (
-              sprints.map((sprint) => (
-                <div
-                  key={sprint.id}
-                  className="grid gap-3 px-5 py-4 sm:grid-cols-[96px_1fr_140px_120px]"
-                >
-                  <span className="font-mono text-sm text-arena-gray">
-                    #{sprint.sprint_number}
-                  </span>
-                  <span>
-                    <span className="block font-semibold text-arena-white">
-                      {sprint.title}
-                    </span>
-                    <span className="mt-1 block text-sm text-arena-gray">
-                      {sprint.discipline}
-                    </span>
-                  </span>
-                  <span className="text-sm text-arena-gray">
-                    {formatDate(sprint.open_at)}
-                  </span>
-                  <span
-                    className={[
-                      'inline-flex h-7 w-fit items-center rounded-md border px-2.5 text-xs font-semibold uppercase',
-                      statusClasses[sprint.sprint_status],
-                    ].join(' ')}
+          <h1 className="font-display text-5xl font-black text-white mb-3">
+            Arena Operations
+          </h1>
+
+          <p className="text-gray-400 text-base">
+            Welcome back, <span className="text-cyan-400 font-semibold">{profile?.display_name ?? 'admin'}</span>. Manage sprints, submissions, and judges.
+          </p>
+        </div>
+
+        {/* Metrics Grid */}
+        <div className="grid gap-4 sm:grid-cols-3">
+          <MetricCard label="Total Sprints" value={sprintCount ?? 0} icon="📋" />
+          <MetricCard label="Submissions" value={submissionCount ?? 0} icon="📤" />
+          <MetricCard label="Active Judges" value={judgeCount ?? 0} icon="⚖️" />
+        </div>
+
+        {/* Recent Sprints Section */}
+        <div>
+          <h2 className="font-display text-2xl font-bold text-white mb-4">Recent Sprints</h2>
+
+          <div className="overflow-hidden rounded-2xl border border-white/10 glass">
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-4 bg-white/5">
+              <h3 className="font-semibold text-white">Sprint Directory</h3>
+              <span className="text-xs text-gray-500">Last 6 sprints</span>
+            </div>
+
+            <div className="divide-y divide-white/10">
+              {sprints.length > 0 ? (
+                sprints.map((sprint, idx) => (
+                  <motion.div
+                    key={sprint.id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="grid gap-4 px-6 py-4 sm:grid-cols-[100px_1fr_120px_140px] items-center hover:bg-white/5 transition-colors duration-200"
                   >
-                    {sprint.sprint_status}
-                  </span>
+                    <span className="font-mono text-sm font-bold text-cyan-400">
+                      #{sprint.sprint_number}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-white">
+                        {sprint.title}
+                      </p>
+                      <p className="text-sm text-gray-400 mt-1">
+                        {sprint.discipline}
+                      </p>
+                    </div>
+                    <span className="text-sm text-gray-400">
+                      {formatDate(sprint.open_at)}
+                    </span>
+                    <span
+                      className={[
+                        'inline-flex h-fit px-3 py-1 rounded-lg border text-xs font-bold uppercase w-fit',
+                        statusClasses[sprint.sprint_status],
+                      ].join(' ')}
+                    >
+                      {sprint.sprint_status}
+                    </span>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="px-6 py-12 text-center">
+                  <p className="text-gray-400 font-medium">No sprints have been created yet</p>
+                  <p className="text-gray-500 text-sm mt-1">Create your first sprint to get started</p>
                 </div>
-              ))
-            ) : (
-              <div className="px-5 py-10 text-sm text-arena-gray">
-                No sprints have been created yet.
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );
@@ -139,19 +153,31 @@ export default async function AdminPage() {
 function MetricCard({
   label,
   value,
+  icon,
 }: {
   label: string;
   value: number;
+  icon?: string;
 }) {
   return (
-    <div className="rounded-md border border-arena-border bg-arena-card px-5 py-4">
-      <div className="font-mono text-xs uppercase tracking-widest text-arena-gray">
-        {label}
+    <motion.div
+      whileHover={{ scale: 1.02, y: -5 }}
+      transition={{ type: 'spring', stiffness: 300 }}
+      className="rounded-xl border border-white/10 glass px-6 py-5 group cursor-pointer"
+    >
+      <div className="flex items-start justify-between mb-3">
+        <div className="font-mono text-xs uppercase tracking-widest text-gray-400 font-bold">
+          {label}
+        </div>
+        {icon && <span className="text-2xl opacity-60 group-hover:opacity-100 transition-opacity">{icon}</span>}
       </div>
-      <div className="mt-3 font-display text-3xl font-extrabold text-arena-white">
+
+      <div className="font-display text-4xl font-black text-white">
         {value.toLocaleString()}
       </div>
-    </div>
+
+      <div className="mt-3 h-0.5 w-12 bg-gradient-to-r from-cyan-500 to-purple-500 group-hover:w-full transition-all duration-300" />
+    </motion.div>
   );
 }
 

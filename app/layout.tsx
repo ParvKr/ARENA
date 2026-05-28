@@ -3,6 +3,7 @@ import { DM_Sans, JetBrains_Mono, Syne } from 'next/font/google';
 
 import { NavBar } from '@/components/NavBar';
 import ToastSystem from '@/components/ToastSystem';
+import { PageTransitionProvider } from '@/components/PageTransitionProvider';
 import '@/app/globals.css';
 
 const syne = Syne({
@@ -43,10 +44,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable}`}>
-      <body className="bg-arena-bg text-arena-offwhite font-body antialiased">
+    <html lang="en" className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} bg-[#0A0A0F]`}>
+      <body className="bg-[#0A0A0F] text-white font-body antialiased">
         <NavBar />
-        <main className="min-h-screen">{children}</main>
+        <PageTransitionProvider>
+          <main className="min-h-screen">{children}</main>
+        </PageTransitionProvider>
         <ToastSystem />
       </body>
     </html>

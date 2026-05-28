@@ -125,85 +125,152 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen bg-arena-black flex items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md bg-arena-card border border-arena-border rounded-2xl p-8 shadow-2xl"
-      >
-        <div className="space-y-2 mb-8">
-          <h1 className="font-display text-5xl font-black text-arena-red">
-            ARENA
-          </h1>
-
-          <p className="text-arena-gray">
-            Welcome back, competitor.
-            Please sign in.
-          </p>
+    <div className="min-h-screen bg-[#0A0A0F] flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Background blur elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-40 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-10 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl" />
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="relative z-10"
         >
-          <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-arena-gray font-bold">
-              Username or Email Address
-            </label>
-
-            <input
-              {...register('identifier')}
-              type="text"
-              autoComplete="username"
-              className="w-full bg-arena-black border border-arena-border rounded-xl px-4 py-3 text-arena-offwhite outline-none focus:border-arena-red"
-            />
-
-            {errors.identifier && (
-              <p className="text-sm text-arena-red">
-                {errors.identifier.message}
-              </p>
-            )}
+          {/* Header */}
+          <div className="text-center mb-10">
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="font-display text-6xl font-black tracking-tighter bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent mb-3"
+            >
+              ARENA
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              className="text-base text-gray-400"
+            >
+              Welcome back, competitor
+            </motion.p>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-arena-gray font-bold">
-              Password
-            </label>
-
-            <input
-              {...register('password')}
-              type="password"
-              autoComplete="current-password"
-              className="w-full bg-arena-black border border-arena-border rounded-xl px-4 py-3 text-arena-offwhite outline-none focus:border-arena-red"
-            />
-
-            {errors.password && (
-              <p className="text-sm text-arena-red">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-4 rounded-xl font-display font-black text-lg bg-arena-red text-white hover:opacity-90 transition disabled:opacity-50"
+          {/* Form Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.4 }}
+            className="glass rounded-2xl p-8 border border-white/10"
           >
-            {isSubmitting ? 'Signing In...' : 'Sign In'}
-          </button>
-        </form>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-5"
+            >
+              {/* Identifier */}
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  Username or Email
+                </label>
+                <input
+                  {...register('identifier')}
+                  type="text"
+                  autoComplete="username"
+                  placeholder="Enter your username or email"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 text-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/20 transition-all duration-200"
+                />
+                {errors.identifier && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xs text-red-400 font-medium"
+                  >
+                    {errors.identifier.message}
+                  </motion.p>
+                )}
+              </div>
 
-        <div className="mt-8 text-center text-sm text-arena-gray">
-          New to ARENA?{' '}
-          <button
-            onClick={() => router.push('/signup')}
-            className="text-arena-cyan font-bold hover:underline"
+              {/* Password */}
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold uppercase tracking-widest text-gray-400">
+                  Password
+                </label>
+                <input
+                  {...register('password')}
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 text-sm focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/20 transition-all duration-200"
+                />
+                {errors.password && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-xs text-red-400 font-medium"
+                  >
+                    {errors.password.message}
+                  </motion.p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <motion.button
+                type="submit"
+                disabled={isSubmitting}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full mt-8 py-3.5 rounded-lg font-display font-bold text-base bg-gradient-to-r from-cyan-500 to-purple-500 text-white hover:shadow-lg hover:shadow-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="w-4 h-4 border-2 border-transparent border-t-white rounded-full"
+                    />
+                    Signing in...
+                  </span>
+                ) : (
+                  'Sign In'
+                )}
+              </motion.button>
+            </form>
+
+            {/* Divider */}
+            <div className="my-6 flex items-center gap-3">
+              <div className="flex-1 h-px bg-white/10" />
+              <span className="text-xs text-gray-500">NEW HERE?</span>
+              <div className="flex-1 h-px bg-white/10" />
+            </div>
+
+            {/* Sign Up Link */}
+            <motion.button
+              onClick={() => router.push('/signup')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-lg font-semibold text-white border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all duration-200"
+            >
+              Create Account
+            </motion.button>
+          </motion.div>
+
+          {/* Footer Text */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.4 }}
+            className="text-center text-xs text-gray-500 mt-8"
           >
-            Create an account
-          </button>
-        </div>
-      </motion.div>
+            By signing in, you agree to our{' '}
+            <span className="text-cyan-400 hover:underline cursor-pointer">
+              Terms of Service
+            </span>
+          </motion.p>
+        </motion.div>
+      </div>
     </div>
   );
 }

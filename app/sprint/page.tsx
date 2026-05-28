@@ -48,15 +48,26 @@ export default function SprintPage() {
   // Structural Guard: Narrowing down types so sprint is guaranteed non-null downstream
   if (!sprint) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-4">
-        <p className="font-display text-4xl font-extrabold text-arena-offwhite">
-          No active sprint.
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center px-4"
+      >
+        <p className="font-display text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+          No Active Sprint
         </p>
 
-        <p className="text-arena-gray">
-          Next Sprint drops Friday 6pm. Sign up to be notified.
+        <p className="text-gray-400 text-lg max-w-xl">
+          The next sprint drops Friday at 6pm. Get ready to compete.
         </p>
-      </div>
+
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-semibold cursor-pointer"
+        >
+          Notify Me
+        </motion.div>
+      </motion.div>
     );
   }
 
@@ -70,12 +81,12 @@ export default function SprintPage() {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="max-w-4xl mx-auto px-4 py-8 space-y-8"
+      className="max-w-5xl mx-auto px-4 pt-24 pb-12 space-y-10"
     >
       {/* Sprint header */}
-      <motion.div variants={item} className="flex flex-col gap-4">
+      <motion.div variants={item} className="flex flex-col gap-6">
         <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-mono text-arena-gray text-sm">
+          <span className="font-mono text-gray-500 text-sm font-medium tracking-widest uppercase">
             Sprint #{sprint.sprint_number}
           </span>
 
@@ -84,13 +95,13 @@ export default function SprintPage() {
           <StatusBadge status={currentStatus} />
         </div>
 
-        <h1 className="font-display font-extrabold text-3xl md:text-4xl text-arena-white">
+        <h1 className="font-display font-black text-5xl md:text-6xl leading-tight text-white">
           {sprint.title}
         </h1>
 
         {sprint.close_at && (
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-arena-gray">Closes in:</span>
+          <div className="flex items-center gap-4 pt-2">
+            <span className="text-sm font-medium text-gray-400">Closes in:</span>
 
             <CountdownTimer targetDate={sprint.close_at} />
           </div>
@@ -99,16 +110,20 @@ export default function SprintPage() {
 
       {/* Prize banner */}
       <motion.div
-        box-target="prize-banner"
         variants={item}
-        className="border border-arena-gold/30 rounded-lg p-4 bg-arena-gold-dim flex items-center gap-4"
+        className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/30 group"
       >
-        <div>
-          <p className="text-xs text-arena-gold font-bold tracking-widest uppercase">
-            First Place Award
-          </p>
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-yellow-500/5 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        <div className="relative">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-lg">🏆</span>
+            <p className="text-xs font-black tracking-widest uppercase bg-gradient-to-r from-amber-400 to-yellow-400 bg-clip-text text-transparent">
+              First Place Prize
+            </p>
+          </div>
 
-          <p className="text-arena-offwhite font-medium">
+          <p className="text-white font-semibold text-lg">
             {prize.first?.description}
           </p>
         </div>
@@ -174,37 +189,41 @@ interface StatusBadgeProps {
 }
 
 function StatusBadge({ status }: StatusBadgeProps) {
-  // Config mapping completely synchronized with Postgres enum declarations
   const cfg = {
     live: {
       label: 'LIVE',
-      cls: 'text-arena-red border-arena-red/50 bg-arena-red-dim',
+      cls: 'text-red-400 border-red-500/50 bg-red-500/10',
+      dot: 'bg-red-500',
     },
     judging: {
       label: 'JUDGING',
-      cls: 'text-arena-cyan border-arena-cyan/50 bg-arena-cyan-dim',
+      cls: 'text-cyan-400 border-cyan-500/50 bg-cyan-500/10',
+      dot: 'bg-cyan-500',
     },
     complete: {
-      label: 'DONE',
-      cls: 'text-arena-gray border-arena-border',
+      label: 'COMPLETE',
+      cls: 'text-green-400 border-green-500/50 bg-green-500/10',
+      dot: null,
     },
     draft: {
       label: 'DRAFT',
-      cls: 'text-arena-gray border-arena-border',
+      cls: 'text-gray-400 border-gray-500/50 bg-gray-500/10',
+      dot: null,
     },
   }[status] ?? {
     label: status.toUpperCase(),
-    cls: 'text-arena-gray border-arena-border',
+    cls: 'text-gray-400 border-gray-500/50 bg-gray-500/10',
+    dot: null,
   };
 
   return (
     <span
-      className={`text-xs font-bold font-display border rounded px-2 py-0.5 ${cfg.cls}`}
+      className={`text-xs font-bold font-display border rounded-lg px-3 py-1 flex items-center gap-2 w-fit ${cfg.cls}`}
       aria-label={`Sprint status: ${status}`}
     >
-      {status === 'live' && (
+      {cfg.dot && (
         <span
-          className="mr-1 animate-pulse inline-block w-1.5 h-1.5 rounded-full bg-arena-red"
+          className={`inline-block w-2 h-2 rounded-full ${cfg.dot} animate-pulse`}
           aria-hidden="true"
         />
       )}
