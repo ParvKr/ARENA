@@ -18,10 +18,16 @@ export async function proxy(request: NextRequest) {
     },
   });
 
+  // Check if Supabase credentials are configured
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    // Allow auth routes without Supabase for development/testing
+    return response;
+  }
+
   // 2. Initialize Official Supabase SSR Cookie Exchange Pattern
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
