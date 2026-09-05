@@ -7,8 +7,6 @@ import { getJudgingAssignment, getJudgeProgress } from '@/lib/services/judging.s
 import { getSubmissionsForJudging } from '@/lib/services/submission.service';
 import type { AnonymisedSubmission } from '@/types/api.types'; 
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Route response contract directly tracking the core data types
  */

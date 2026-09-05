@@ -140,6 +140,14 @@ export async function completeEvaluation(
 ): Promise<void> {
   const supabase = await createSupabaseServerClient();
 
+  // Verify assignment before checking progress or mutating. Without this guard,
+  // an unassigned judge could receive a false-success response after updating
+  // zero rows.
+  const assignment = await getJudgingAssignment(sprintId, judgeId);
+  if (assignment.is_complete) {
+    throw createDomainError('Your evaluation has already been submitted for this sprint.', 409);
+  }
+
   // Validate: all entries must be scored
   const progress = await getJudgeProgress(sprintId, judgeId);
   if (progress.scored < progress.total || progress.total === 0) {
@@ -149,16 +157,20 @@ export async function completeEvaluation(
     );
   }
 
-  const { error } = await supabase
+  const { error, count } = await supabase
     .from('judging_assignments')
     .update({
       is_complete: true,
       completed_at: new Date().toISOString(),
-    })
+    }, { count: 'exact' })
     .eq('sprint_id', sprintId)
-    .eq('judge_user_id', judgeId);
+    .eq('judge_user_id', judgeId)
+    .eq('is_complete', false);
 
   if (error) throw createDomainError(`Failed to complete evaluation: ${error.message}`, 500);
+  if (count !== 1) {
+    throw createDomainError('Your evaluation could not be finalized. Please refresh and try again.', 409);
+  }
 
   // Void expression applied to make audit tracking cleanly fire-and-forget
   void audit({
@@ -229,4 +241,3 @@ export async function allJudgesComplete(sprintId: string): Promise<boolean> {
 
   return data === true;
 }
-

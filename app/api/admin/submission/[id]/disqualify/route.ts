@@ -7,8 +7,6 @@ import { DisqualifySchema } from '@/lib/validators/admin.schema';
 import { disqualifySubmission } from '@/lib/services/submission.service';
 import { audit } from '@/lib/utils/audit';
 
-export const dynamic = 'force-dynamic';
-
 export interface AdminDisqualifySubmissionResponse {
   data: {
     message: string;

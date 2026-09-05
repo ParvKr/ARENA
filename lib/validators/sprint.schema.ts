@@ -13,8 +13,7 @@ export type SprintDiscipline = typeof SPRINT_DISCIPLINES[number];
 
 // ─── REUSABLE VALIDATION SNIPPETS ───────────────────────────────────────────
 // Enforces strict UTC offset structure and normalizes date formatting
-const UtcDateTimeSchema = z
-  .iso
+const UtcDateTimeSchema = z.string()
   .datetime({ message: 'Must be a valid ISO 8601 datetime string ending with Z (UTC)' })
   .transform((val) => new Date(val).toISOString());
 

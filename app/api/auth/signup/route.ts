@@ -6,8 +6,6 @@ import { createProfile } from '@/lib/services/profile.service';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { z } from 'zod';
 
-export const dynamic = 'force-dynamic';
-
 const SignupSchema = z.object({
   email: z.email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),

@@ -3,8 +3,6 @@ import { handleRouteError } from '@/lib/middleware/errorHandler';
 import { getUserSubmission } from '@/lib/services/submission.service';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-export const dynamic = 'force-dynamic';
-
 interface RouteContext {
   params: Promise<{
     id: string;

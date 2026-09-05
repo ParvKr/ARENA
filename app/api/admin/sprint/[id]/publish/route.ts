@@ -7,8 +7,6 @@ import { limitPublish } from '@/lib/middleware/rateLimit'; // Now resolves clean
 import { publishSprint } from '@/lib/services/sprint.service';
 import { audit } from '@/lib/utils/audit';
 
-export const dynamic = 'force-dynamic';
-
 export interface AdminSprintPublishResponse {
   data: {
     message: string;

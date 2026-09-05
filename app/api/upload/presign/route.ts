@@ -6,8 +6,6 @@ import { PresignSchema } from '@/lib/validators/admin.schema';
 // Fixed: Importing both the function and the type from their true source file
 import { createPresignedUploadUrl, type PresignResult } from '@/lib/services/storage.service';
 
-export const dynamic = 'force-dynamic';
-
 /**
  * Route response contract directly tracking the core service types
  */

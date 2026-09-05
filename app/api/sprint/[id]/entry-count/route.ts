@@ -2,8 +2,6 @@ import { handleRouteError } from '@/lib/middleware/errorHandler';
 import { getEntryCount } from '@/lib/services/sprint.service';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
-export const dynamic = 'force-dynamic';
-
 interface RouteContext {
   params: Promise<{
     id: string;

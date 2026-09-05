@@ -5,8 +5,6 @@ import { handleRouteError } from '@/lib/middleware/errorHandler';
 import { getProfileByUsername, getSprintHistory } from '@/lib/services/profile.service';
 import type { Profile } from '@/types/api.types'; 
 
-export const dynamic = 'force-dynamic';
-
 // Uses TypeScript's ReturnType utility to extract the exact shape the database service returns
 // Awaits the Promise array block dynamically so your API contract stays perfectly aligned
 type ServiceHistoryEntry = Awaited<ReturnType<typeof getSprintHistory>>[number];

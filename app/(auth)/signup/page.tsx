@@ -7,7 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'framer-motion';
 import { z } from 'zod';
 import useSWR from 'swr';
-import { useToast } from '../../../lib/store'; // Adjust relative path based on directory depth
+import { useToast } from '@/lib/store';
+import { AuthProviderButtons } from '@/components/AuthProviderButtons';
 
 const SignupSchema = z.object({
   display_name: z
@@ -130,6 +131,12 @@ export default function SignupPage() {
             ARENA
           </h1>
           <p className="text-sm text-arena-gray">Forge your digital creative credential</p>
+        </div>
+
+        <AuthProviderButtons />
+
+        <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-arena-gray before:h-px before:flex-1 before:bg-arena-border after:h-px after:flex-1 after:bg-arena-border">
+          or create with email
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

@@ -4,7 +4,6 @@ import { getSprintById } from '@/lib/services/sprint.service';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 
 // Results are immutable after publication
-export const revalidate = 60;
 
 interface RouteContext {
   params: Promise<{

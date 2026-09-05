@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 
 import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 import { useArenaStore } from '@/lib/store';
+import { AuthProviderButtons } from '@/components/AuthProviderButtons';
 
 const SignInSchema = z.object({
   identifier: z
@@ -35,7 +36,7 @@ function SignInForm() {
   const searchParams = useSearchParams();
   const addToast = useArenaStore((state) => state.addToast);
 
-  const next = searchParams.get('next') || '/sprint';
+  const next = getSafeNextPath(searchParams.get('next'));
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -143,6 +144,12 @@ function SignInForm() {
           </p>
         </div>
 
+        <AuthProviderButtons next={next} />
+
+        <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-arena-gray before:h-px before:flex-1 before:bg-arena-border after:h-px after:flex-1 after:bg-arena-border">
+          or use email
+        </div>
+
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-6"
@@ -214,4 +221,10 @@ function SignInFallback() {
       <div className="h-130 w-full max-w-md animate-pulse rounded-2xl border border-arena-border bg-arena-card" />
     </div>
   );
+}
+
+/** Prevent an untrusted query string from turning sign-in into an open redirect. */
+function getSafeNextPath(next: string | null): string {
+  if (!next || !next.startsWith('/') || next.startsWith('//')) return '/sprint';
+  return next;
 }

@@ -71,7 +71,7 @@ export function LiveSprintCard({ sprint }: LiveSprintCardProps) {
         <span className="text-xs text-arena-gray font-body">
           Closes Sunday 6:00 PM
         </span>
-        <Link href={`/sprint/${sprint.id}`}>
+        <Link href="/sprint">
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}

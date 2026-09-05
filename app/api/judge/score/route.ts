@@ -9,8 +9,6 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'; // Needed fo
 import { createDomainError } from '@/lib/middleware/errorHandler';
 import type { Score } from '@/types/api.types';
 
-export const dynamic = 'force-dynamic';
-
 export interface JudgeScoreSaveResponse {
   data: {
     score: Score;

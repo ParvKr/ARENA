@@ -1,11 +1,10 @@
 import { handleRouteError } from '@/lib/middleware/errorHandler';
+import { connection } from 'next/server';
 import {
   getCurrentSprint,
   getEntryCount,
 } from '@/lib/services/sprint.service';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-
-export const dynamic = 'force-dynamic';
 
 /**
  * Returns live sprint state + entry metrics.
@@ -13,6 +12,7 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(): Promise<Response> {
   try {
+    await connection();
     const supabaseClient = await createSupabaseServerClient();
 
     const sprint = await getCurrentSprint(supabaseClient);

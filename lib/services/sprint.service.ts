@@ -9,7 +9,7 @@ import {
   isSprintStatus,
   type Sprint,
 } from '@/types/api.types';
-import type { CreateSprintInput } from '@/lib/validators/sprint.schema';
+import type { CreateSprintInput, UpdateSprintInput } from '@/lib/validators/sprint.schema';
 
 // ─── PUBLIC DATA READ QUERIES ────────────────────────────────────────────────
 
@@ -284,4 +284,92 @@ export async function closeSprint(sprintId: string, adminId: string): Promise<vo
     entity_id: sprintId,
     metadata: {},
   });
+}
+
+/**
+ * Recalls a live sprint back to draft.
+ * live → draft state change. Emergency use only.
+ */
+export async function recallSprint(sprintId: string, adminId: string): Promise<void> {
+  const admin = getSupabaseAdmin();
+
+  const { error, count } = await admin
+    .from('sprints')
+    .update({ sprint_status: 'draft' }, { count: 'exact' })
+    .eq('id', sprintId)
+    .eq('sprint_status', 'live');
+
+  if (error) {
+    throw createDomainError(`Failed to recall sprint: ${error.message}`, 500);
+  }
+
+  if (count === 0) {
+    throw createDomainError('Action rejected: Sprint is not live or has already transitioned', 409);
+  }
+
+  void audit({
+    actor_id: adminId,
+    action: 'sprint.recalled',
+    entity_type: 'sprint',
+    entity_id: sprintId,
+    metadata: { recalled_at: new Date().toISOString() },
+  });
+}
+
+/**
+ * Permanently deletes a draft sprint.
+ * Only draft sprints can be deleted.
+ */
+export async function deleteDraftSprint(sprintId: string, adminId: string): Promise<void> {
+  const admin = getSupabaseAdmin();
+
+  // Guard: only drafts may be deleted
+  const { data: sprint } = await admin
+    .from('sprints')
+    .select('sprint_status, sprint_number')
+    .eq('id', sprintId)
+    .single();
+
+  if (!sprint) {
+    throw createDomainError('Sprint not found', 404);
+  }
+
+  if (sprint.sprint_status !== 'draft') {
+    throw createDomainError(
+      `Cannot delete a sprint with status '${sprint.sprint_status}'. Only drafts can be deleted.`,
+      409
+    );
+  }
+
+  const { error } = await admin.from('sprints').delete().eq('id', sprintId);
+
+  if (error) {
+    throw createDomainError(`Failed to delete sprint: ${error.message}`, 500);
+  }
+
+  void audit({
+    actor_id: adminId,
+    action: 'sprint.deleted',
+    entity_type: 'sprint',
+    entity_id: sprintId,
+    metadata: { sprint_number: sprint.sprint_number },
+  });
+}
+
+/**
+ * Updates an existing sprint's fields.
+ * Allowed for any sprint status (admin only).
+ */
+export async function updateSprint(sprintId: string, input: UpdateSprintInput, adminId: string): Promise<Sprint> {
+  const admin = getSupabaseAdmin();
+  const { data, error } = await admin
+    .from('sprints')
+    .update(input as any)
+    .eq('id', sprintId)
+    .select()
+    .single();
+  if (error || !data) throw createDomainError(`Failed to update sprint: ${error?.message}`, 500);
+  void audit({ actor_id: adminId, action: 'sprint.updated', entity_type: 'sprint', entity_id: sprintId, metadata: {} });
+  if (!isSprintStatus(data.sprint_status)) throw createDomainError('Invalid sprint status', 500);
+  return data as Sprint;
 }

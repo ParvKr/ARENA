@@ -25,6 +25,33 @@ export interface PresignResult {
 }
 
 /**
+ * Ensures a submitted URL points to an asset uploaded for this user in the
+ * expected public bucket. Client-provided URLs must never choose arbitrary
+ * external or another participant's files.
+ */
+export function assertOwnedUploadUrl(url: string, userId: string, isProcessDoc: boolean): void {
+  const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const bucket = isProcessDoc ? BUCKET_PROCESS_DOCS : BUCKET_SUBMISSIONS;
+
+  if (!supabaseUrl) {
+    throw createDomainError('Storage configuration is unavailable.', 500);
+  }
+
+  try {
+    const assetUrl = new URL(url);
+    const expectedOrigin = new URL(supabaseUrl).origin;
+    const expectedPathPrefix = `/storage/v1/object/public/${bucket}/${userId}/`;
+
+    if (assetUrl.origin !== expectedOrigin || !assetUrl.pathname.startsWith(expectedPathPrefix)) {
+      throw createDomainError('Submission assets must be uploaded to your Arena storage area.', 400);
+    }
+  } catch (error) {
+    if (error instanceof Error && 'isDomainError' in error) throw error;
+    throw createDomainError('Submission asset URL is invalid.', 400);
+  }
+}
+
+/**
  * Generates an authenticated pre-signed upload URL for an asset payload.
  * Verifies payload sizes, enforces rate limits, and locks down file extensions server-side.
  */

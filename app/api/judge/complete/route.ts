@@ -6,8 +6,6 @@ import { handleRouteError } from '@/lib/middleware/errorHandler';
 import { CompleteEvaluationSchema } from '@/lib/validators/judging.schema';
 import { completeEvaluation } from '@/lib/services/judging.service';
 
-export const dynamic = 'force-dynamic';
-
 export interface JudgeEvaluationCompleteResponse {
   data: {
     message: string;

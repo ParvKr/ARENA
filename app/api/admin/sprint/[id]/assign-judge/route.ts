@@ -9,8 +9,6 @@ import { sendJudgeAssignment } from '@/lib/services/email.service';
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { getSprintById } from '@/lib/services/sprint.service';
 
-export const dynamic = 'force-dynamic';
-
 export interface AdminAssignJudgeResponse {
   data: {
     message: string;

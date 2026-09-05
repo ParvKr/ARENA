@@ -8,8 +8,6 @@ import { createSprint } from '@/lib/services/sprint.service';
 import { audit } from '@/lib/utils/audit'; 
 import type { Sprint } from '@/types/api.types'; // Fixed: Import your actual structural Sprint interface type
 
-export const dynamic = 'force-dynamic';
-
 export interface AdminSprintCreateResponse {
   data: {
     sprint: Sprint;

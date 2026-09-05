@@ -3,8 +3,6 @@ import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import { handleRouteError } from '@/lib/middleware/errorHandler';
 
-export const dynamic = 'force-dynamic';
-
 export interface SignoutResponse {
   data: {
     message: string;

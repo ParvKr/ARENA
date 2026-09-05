@@ -13,24 +13,30 @@ const SOUNDS = {
 
 type SoundKey = keyof typeof SOUNDS;
 
-const audioCache: Record<string, HTMLAudioElement> = {};
+let audioCache: Record<string, HTMLAudioElement> | null = null;
 
-if (typeof window !== 'undefined') {
-  Object.entries(SOUNDS).forEach(([key, path]) => {
-    const audio = new Audio(path);
-    audio.volume = 0.3;
-    audio.preload = 'auto';
-    audioCache[key] = audio;
-  });
+function getAudioCache() {
+  if (typeof window === 'undefined') return null;
+  if (!audioCache) {
+    audioCache = {};
+    Object.entries(SOUNDS).forEach(([key, path]) => {
+      const audio = new Audio(path);
+      audio.volume = 0.3;
+      audio.preload = 'auto';
+      audioCache![key] = audio;
+    });
+  }
+  return audioCache;
 }
 
 export function playSound(key: SoundKey): void {
-  if (typeof window === 'undefined') return;
+  const cache = getAudioCache();
+  if (!cache) return;
 
   const soundEnabled = useArenaStore.getState().soundEnabled;
   if (!soundEnabled) return;
 
-  const cachedAudio = audioCache[key];
+  const cachedAudio = cache[key];
   if (!cachedAudio) return;
 
   try {

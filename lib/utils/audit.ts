@@ -12,7 +12,10 @@ export type AuditEntityType =
 // ─── AUDIT LIFE-CYCLE TRACKING ACTION TYPE MATRIX ───────────────────────────
 export type AuditAction =
   | 'sprint.created'
+  | 'sprint.updated'
   | 'sprint.published'
+  | 'sprint.recalled'
+  | 'sprint.deleted'
   | 'sprint.closed'
   | 'sprint.results_computed'
   | 'sprint.results_published'

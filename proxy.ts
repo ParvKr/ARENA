@@ -1,6 +1,6 @@
 // =========================================
 // ARENA V0.1P SECURITY & GATEWAY MIDDLEWARE
-// middleware.ts
+// proxy.ts
 // =========================================
 
 import { createServerClient } from '@supabase/ssr';
@@ -38,7 +38,7 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // 3. Decrypt active token data packet safely inside Edge RAM
+  // 3. Decrypt active token data packet safely inside the Node.js runtime
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -60,11 +60,11 @@ export async function proxy(request: NextRequest) {
   // ─── THE SECURITY GATE MATRIX ───────────────────────────────────────────
 
   const isAuthRoute = pathname.startsWith('/signin') || pathname.startsWith('/signup') || pathname.startsWith('/forgot-password');
-  const isProtectedPath = pathname.startsWith('/dashboard') || pathname.startsWith('/judge') || pathname.startsWith('/admin') || pathname.startsWith('/sprint') || pathname.startsWith('/profile');
+  const isProtectedPath = pathname.startsWith('/dashboard') || pathname.startsWith('/judge') || pathname.startsWith('/admin');
 
   // Gate 1: Redirect authenticated users away from authentication onboarding pages
   if (user && isAuthRoute) {
-    const targetDashboard = userRole === 'admin' ? '/admin' : userRole === 'judge' ? '/judge' : '/dashboard';
+    const targetDashboard = userRole === 'admin' ? '/admin' : userRole === 'judge' ? '/judge' : '/sprint';
     return NextResponse.redirect(new URL(targetDashboard, request.url));
   }
 
@@ -77,12 +77,12 @@ export async function proxy(request: NextRequest) {
 
   // Gate 3: Admin Workspace Shield
   if (pathname.startsWith('/admin') && userRole !== 'admin') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/sprint', request.url));
   }
 
   // Gate 4: Judge Workspace Shield
   if (pathname.startsWith('/judge') && userRole !== 'judge' && userRole !== 'admin') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/sprint', request.url));
   }
 
   return response;

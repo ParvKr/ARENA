@@ -1,8 +1,7 @@
-// hooks/useCountdown.ts
-// Absolute precision countdown engine hardened against tab background throttling, clock tampering, and frame-rate loop race states.
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import { playSound } from '@/lib/sound';
 
 export interface CountdownState {
@@ -10,145 +9,147 @@ export interface CountdownState {
   hours: number;
   minutes: number;
   seconds: number;
-  total: number; // Total seconds remaining
+  /** Whole seconds remaining, rounded up so the timer never closes early. */
+  total: number;
   phase: 'default' | 'warning' | 'urgent' | 'critical' | 'closed';
 }
 
 export interface CountdownConfig {
   targetDate: string | null | undefined;
-  serverOffset?: number; // Server-time offset in ms: (serverTimeMillis - clientTimeMillis)
-  enableRafCritical?: boolean; // Toggles high-frequency execution path during final crunch window
+  /** Difference in milliseconds between server time and the browser clock. */
+  serverOffset?: number;
+  /** Use animation frames for the final ten seconds. */
+  enableRafCritical?: boolean;
 }
 
-function getPhase(totalSeconds: number): CountdownState['phase'] {
-  if (totalSeconds <= 0) return 'closed';
-  if (totalSeconds <= 600) return 'critical';  // < 10 minutes (Final Sprint Closure)
-  if (totalSeconds <= 3600) return 'urgent';    // < 1 hour
-  if (totalSeconds <= 21600) return 'warning';  // < 6 hours
+const CLOSED_STATE: CountdownState = { days: 0, hours: 0, minutes: 0, seconds: 0, total: 0, phase: 'closed' };
+const SECOND = 1_000;
+const MINUTE = 60;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+const RAF_WINDOW_SECONDS = 10;
+
+function getPhase(total: number): CountdownState['phase'] {
+  if (total <= 0) return 'closed';
+  if (total <= 10 * MINUTE) return 'critical';
+  if (total <= HOUR) return 'urgent';
+  if (total <= 6 * HOUR) return 'warning';
   return 'default';
 }
 
-export function useCountdown({ targetDate, serverOffset = 0, enableRafCritical = false }: CountdownConfig): CountdownState {
-  const [state, setState] = useState<CountdownState>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    total: 0,
-    phase: 'closed',
-  });
+function toCountdownState(remainingMilliseconds: number): CountdownState {
+  const total = Math.max(0, Math.ceil(remainingMilliseconds / SECOND));
 
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const rafRef = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
-  const isCriticalRafActive = useRef<boolean>(false);
+  return {
+    days: Math.floor(total / DAY),
+    hours: Math.floor((total % DAY) / HOUR),
+    minutes: Math.floor((total % HOUR) / MINUTE),
+    seconds: total % MINUTE,
+    total,
+    phase: getPhase(total),
+  };
+}
+
+function statesMatch(a: CountdownState, b: CountdownState): boolean {
+  return a.days === b.days && a.hours === b.hours && a.minutes === b.minutes && a.seconds === b.seconds && a.total === b.total && a.phase === b.phase;
+}
+
+/** Recalculates from the deadline on every update, preventing timer drift. */
+export function useCountdown({ targetDate, serverOffset = 0, enableRafCritical = false }: CountdownConfig): CountdownState {
+  const [state, setState] = useState<CountdownState>(CLOSED_STATE);
+  const previousTotalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    function cleanupTimers() {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-      isCriticalRafActive.current = false;
+    const targetTime = targetDate ? new Date(targetDate).getTime() : Number.NaN;
+    const offset = Number.isFinite(serverOffset) ? serverOffset : 0;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    let frameId: number | undefined;
+    let disposed = false;
+
+    // A new deadline is a new countdown, not a continuation of the old one.
+    previousTotalRef.current = null;
+
+    const cancelScheduledUpdate = () => {
+      if (timeoutId !== undefined) clearTimeout(timeoutId);
+      if (frameId !== undefined) cancelAnimationFrame(frameId);
+      timeoutId = undefined;
+      frameId = undefined;
+    };
+
+    const commit = (next: CountdownState) => {
+      setState((current) => (statesMatch(current, next) ? current : next));
+    };
+
+    if (!Number.isFinite(targetTime)) {
+      previousTotalRef.current = null;
+      commit(CLOSED_STATE);
+      return cancelScheduledUpdate;
     }
 
-    // Clean Simplification: Initial state structure already represents 'closed' status
-    if (!targetDate) {
-      cleanupTimers();
-      return;
-    }
+    const update = () => {
+      const next = toCountdownState(targetTime - (Date.now() + offset));
+      const previousTotal = previousTotalRef.current;
 
-    const endTimestamp = new Date(targetDate).getTime();
+      if (enableRafCritical && previousTotal !== null && next.total < previousTotal && next.total > 0 && next.total <= RAF_WINDOW_SECONDS) {
+        playSound('tick');
+      }
 
-    function tick() {
-      const adjustedNow = Date.now() + serverOffset;
-      const totalSeconds = Math.max(0, Math.floor((endTimestamp - adjustedNow) / 1000));
+      previousTotalRef.current = next.total;
+      commit(next);
+    };
 
-      if (totalSeconds <= 0) {
-        setState((current) => current.phase === 'closed' ? current : { days: 0, hours: 0, minutes: 0, seconds: 0, total: 0, phase: 'closed' });
-        cleanupTimers();
+    const schedule = () => {
+      if (disposed || document.hidden) return;
+
+      cancelScheduledUpdate();
+      const remainingMilliseconds = targetTime - (Date.now() + offset);
+
+      if (remainingMilliseconds <= 0) {
+        update();
         return;
       }
 
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      const phase = getPhase(totalSeconds);
-
-      setState((current) => {
-        if (
-          current.days === days &&
-          current.hours === hours &&
-          current.minutes === minutes &&
-          current.seconds === seconds &&
-          current.total === totalSeconds &&
-          current.phase === phase
-        ) {
-          return current; 
-        }
-
-        if (phase === 'critical' && current.seconds !== seconds) {
-          playSound('tick');
-        }
-
-        return { days, hours, minutes, seconds, total: totalSeconds, phase };
-      });
-
-      // Rigid Mutex Lock: Hand control completely over to RAF loop, killing recursive timeout forks
-      if (enableRafCritical && totalSeconds <= 10) {
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-          timerRef.current = null;
-        }
-        isCriticalRafActive.current = true;
-        rafRef.current = requestAnimationFrame(tick);
-      }
-    }
-
-    function scheduleNextTick() {
-      // Exits early if requestAnimationFrame has taken over execution scheduling authority
-      if (isCriticalRafActive.current) return;
-
-      if (timerRef.current) clearTimeout(timerRef.current);
-      
-      const currentNow = Date.now() + serverOffset;
-      const totalSecondsRemaining = Math.max(0, Math.floor((endTimestamp - currentNow) / 1000));
-
-      if (totalSecondsRemaining <= 0) {
-        tick();
+      const next = toCountdownState(remainingMilliseconds);
+      if (enableRafCritical && next.total <= RAF_WINDOW_SECONDS) {
+        frameId = requestAnimationFrame(() => {
+          update();
+          schedule();
+        });
         return;
       }
 
-      const msDelay = 1000 - ((Date.now() + serverOffset) % 1000);
-      timerRef.current = setTimeout(() => {
-        tick();
-        scheduleNextTick();
-      }, msDelay);
-    }
+      // The value changes at the deadline's next whole-second boundary.
+      const delay = Math.max(16, remainingMilliseconds % SECOND || SECOND);
+      timeoutId = setTimeout(() => {
+        update();
+        schedule();
+      }, delay);
+    };
 
-    function handleVisibilityChange() {
+    const refresh = () => {
+      if (disposed || document.hidden) return;
+      update();
+      schedule();
+    };
+
+    const handleVisibilityChange = () => {
       if (document.hidden) {
-        cleanupTimers();
+        cancelScheduledUpdate();
+        previousTotalRef.current = null;
       } else {
-        tick();
-        scheduleNextTick();
+        refresh();
       }
-    }
+    };
 
-    tick();
-    scheduleNextTick();
-
+    refresh();
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      cleanupTimers();
+      disposed = true;
+      cancelScheduledUpdate();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [targetDate, serverOffset, enableRafCritical]);
+  }, [enableRafCritical, serverOffset, targetDate]);
 
   return state;
 }

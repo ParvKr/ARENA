@@ -6,6 +6,7 @@ import { createDomainError } from '@/lib/middleware/errorHandler';
 import { limitSubmission } from '@/lib/middleware/rateLimit';
 import { audit } from '@/lib/utils/audit';
 import { sendSubmissionConfirmation } from './email.service';
+import { assertOwnedUploadUrl } from './storage.service';
 
 // Fixed: Import core input validation structures natively from the Zod schema configuration files
 import type { Submission, AnonymisedSubmission } from '@/types/api.types';
@@ -25,6 +26,11 @@ export async function createSubmission(
 ): Promise<Submission> { // Fixed: Returning standard clean app layer entities instead of leaky raw table rows
   // 1. Explicitly await the sliding window limiter check to block payload spammers
   await limitSubmission(userId, input.sprint_id, 'server-action');
+
+  // URLs are user-controlled request data. Confirm that every asset is in the
+  // authenticated user's own storage namespace before recording it.
+  assertOwnedUploadUrl(input.main_file_url, userId, false);
+  input.process_file_urls.forEach((url) => assertOwnedUploadUrl(url, userId, true));
 
   // 2. Instantiate server client instance wrapper gracefully
   const supabase = client ?? (await createSupabaseServerClient());

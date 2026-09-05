@@ -7,8 +7,6 @@ import { allJudgesComplete } from '@/lib/services/judging.service';
 import { computeResults } from '@/lib/services/results.service';
 import { audit } from '@/lib/utils/audit';
 
-export const dynamic = 'force-dynamic';
-
 export interface AdminComputeResultsResponse {
   data: {
     message: string;

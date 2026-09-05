@@ -28,7 +28,7 @@ export function WelcomeRow({ profile, currentSprint }: WelcomeRowProps) {
         </p>
       </div>
       {currentSprint && (
-        <Link href={`/sprint/${currentSprint.id}`}>
+        <Link href="/sprint">
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}

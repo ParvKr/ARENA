@@ -24,7 +24,7 @@ export const SubmissionSchema = z.object({
   
   process_file_urls: z
     .array(
-      z
+      z.string()
         .url({ message: 'Process links must point to a valid secure URL destination' })
         .max(512, { message: 'Process asset storage path URL is too long' })
     )

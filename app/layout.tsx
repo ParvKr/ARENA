@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { DM_Sans, JetBrains_Mono, Syne } from 'next/font/google';
+import { Inter, JetBrains_Mono, Syne } from 'next/font/google';
 
 import { NavBar } from '@/components/NavBar';
 import ToastSystem from '@/components/ToastSystem';
+import { AuthProvider } from '@/components/AuthProvider';
 import '@/app/globals.css';
 
 const syne = Syne({
@@ -12,9 +14,8 @@ const syne = Syne({
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
   variable: '--font-body',
   display: 'swap',
 });
@@ -43,11 +44,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`dark ${syne.variable} ${inter.variable} ${jetbrains.variable}`}>
       <body className="bg-arena-bg text-arena-offwhite font-body antialiased">
-        <NavBar />
-        <main className="min-h-screen">{children}</main>
-        <ToastSystem />
+        <AuthProvider>
+          <Suspense fallback={<div className="h-14" />}>
+            <NavBar />
+          </Suspense>
+          <main className="min-h-screen">{children}</main>
+          <ToastSystem />
+        </AuthProvider>
       </body>
     </html>
   );

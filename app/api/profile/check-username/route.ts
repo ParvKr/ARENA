@@ -1,10 +1,8 @@
 // app/api/profile/check-username/route.ts
-import { NextResponse } from 'next/server';
+import { NextResponse, connection } from 'next/server';
 import { handleRouteError } from '@/lib/middleware/errorHandler';
 import { isUsernameAvailable } from '@/lib/services/profile.service';
 import { z } from 'zod';
-
-export const dynamic = 'force-dynamic';
 
 const QuerySchema = z.object({
   // FIXED: Added .transform() to automatically sanitize mixed-case queries safely
@@ -28,6 +26,7 @@ export interface UsernameAvailabilityResponse {
 
 export async function GET(req: Request): Promise<NextResponse<UsernameAvailabilityResponse>> {
   try {
+    await connection();
     const { searchParams } = new URL(req.url);
     
     // Zod now safely handles mixed-case requests like "Parv01" without crashing

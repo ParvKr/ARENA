@@ -8,8 +8,6 @@ import { PublishResultsSchema } from '@/lib/validators/admin.schema';
 import { publishResults } from '@/lib/services/results.service';
 import { audit } from '@/lib/utils/audit';
 
-export const dynamic = 'force-dynamic';
-
 export interface AdminPublishResultsResponse {
   data: {
     message: string;

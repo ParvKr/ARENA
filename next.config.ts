@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
+
   /* * FIXED: Moved out of 'experimental' and renamed per the framework specification upgrade guidelines.
    * This ensures external node binary handshakes wrap smoothly on the server side.
    */
