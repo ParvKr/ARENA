@@ -5,61 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5f88a369-2b0b-4622-9777-e5e8dac96fa9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(auth)/signin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/signin/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(auth)/signup/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/signup/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/admin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/admin/sprint/[id]/assign-judge/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/sprint/[id]/assign-judge/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/admin/sprint/[id]/compute-results/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/sprint/[id]/compute-results/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/admin/sprint/[id]/publish-results/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/sprint/[id]/publish-results/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/admin/sprint/[id]/publish/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/sprint/[id]/publish/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/admin/sprint/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/sprint/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/admin/submission/[id]/disqualify/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/submission/[id]/disqualify/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/auth/signout/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/auth/signout/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/auth/signup/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/auth/signup/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/judge/complete/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/judge/complete/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/judge/score/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/judge/score/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/judge/sprint/[id]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/judge/sprint/[id]/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/profile/[username]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/profile/[username]/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/profile/check-username/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/profile/check-username/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/sprint/[id]/entry-count/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/[id]/entry-count/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/sprint/[id]/my-submission/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/[id]/my-submission/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/sprint/[id]/results/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/[id]/results/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/sprint/[id]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/[id]/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/sprint/current/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/current/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/upload/presign/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/upload/presign/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/profile/[username]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/profile/[username]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/LiveSprintCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/LiveSprintCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/NavBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ToastSystem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ToastSystem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/WelcomeRow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/WelcomeRow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/useCountdown.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useCountdown.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/useProfile.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/useToast.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/judging.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/judging.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/sprint.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/sprint.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/storage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/storage.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/submission.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/submission.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/sound.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sound.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/audit.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/audit.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/validators/sprint.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validators/sprint.schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/validators/submission.schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validators/submission.schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/proxy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/proxy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/gotrue-version" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/gotrue-version" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/linked-project.json" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/linked-project.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/pooler-url" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/pooler-url" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/postgres-version" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/postgres-version" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/project-ref" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/project-ref" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/storage-migration" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/storage-migration" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/.temp/storage-version" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/.temp/storage-version" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vitest.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vitest.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,23 +24,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0259080696429062" />
-      <entry key="MS500" value="2.321148260719491" />
-      <entry key="S2" value="4.88138031853045" />
-      <entry key="S5" value="6.0143636553630015" />
-      <entry key="S10" value="6.480248120423949" />
-      <entry key="S30" value="6.820345274576987" />
-      <entry key="S60" value="6.909344345167627" />
-      <entry key="M2" value="6.954462952807541" />
-      <entry key="M5" value="6.982308608966768" />
-      <entry key="M10" value="7.37956878348852" />
-      <entry key="M15" value="10.822734595411946" />
-      <entry key="M30" value="46.809108475035046" />
-      <entry key="H1" value="137.8937006959136" />
-      <entry key="H2" value="245.49827622984049" />
-      <entry key="H4" value="329.3325570563039" />
-      <entry key="D1" value="421.56945293849986" />
-      <entry key="W1" value="439.8713423259921" />
+      <entry key="MS100" value="1.4342115728393074" />
+      <entry key="MS500" value="3.6854895945788693" />
+      <entry key="S2" value="5.757621292231224" />
+      <entry key="S5" value="6.485517744881909" />
+      <entry key="S10" value="7.713139166267527" />
+      <entry key="S30" value="17.543306851897075" />
+      <entry key="S60" value="26.464151378722043" />
+      <entry key="M2" value="33.45962677750784" />
+      <entry key="M5" value="38.825110340731946" />
+      <entry key="M10" value="41.209633146280346" />
+      <entry key="M15" value="45.20378644849383" />
+      <entry key="M30" value="81.15899404041902" />
+      <entry key="H1" value="172.00478161177438" />
+      <entry key="H2" value="279.92358420538187" />
+      <entry key="H4" value="364.29926386290447" />
+      <entry key="D1" value="457.3520834953784" />
+      <entry key="W1" value="475.8390088003107" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -116,23 +62,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.14316974124904994" />
-      <entry key="MS500" value="1.960627830432872" />
-      <entry key="S2" value="4.771211998671011" />
-      <entry key="S5" value="5.968074139404566" />
-      <entry key="S10" value="6.4566953460128635" />
-      <entry key="S30" value="6.8123996330750005" />
-      <entry key="S60" value="6.905359416027374" />
-      <entry key="M2" value="6.95246744034724" />
-      <entry key="M5" value="6.981509663854622" />
-      <entry key="M10" value="7.379166883361551" />
-      <entry key="M15" value="10.822451531312186" />
-      <entry key="M30" value="46.80887556692798" />
-      <entry key="H1" value="137.8934538612552" />
-      <entry key="H2" value="245.49806953275805" />
-      <entry key="H4" value="329.33241977585885" />
-      <entry key="D1" value="421.56942364630333" />
-      <entry key="W1" value="439.8713379567166" />
+      <entry key="MS100" value="1.3948825618666094" />
+      <entry key="MS500" value="3.654341389203735" />
+      <entry key="S2" value="5.737534742347977" />
+      <entry key="S5" value="6.475253588699217" />
+      <entry key="S10" value="7.705876559493554" />
+      <entry key="S30" value="17.53500190330801" />
+      <entry key="S60" value="26.45727596172299" />
+      <entry key="M2" value="33.45511132223394" />
+      <entry key="M5" value="38.82297170708789" />
+      <entry key="M10" value="41.208498835036444" />
+      <entry key="M15" value="45.203001224052386" />
+      <entry key="M30" value="81.1585045488587" />
+      <entry key="H1" value="172.00440554183314" />
+      <entry key="H2" value="279.92331237837834" />
+      <entry key="H4" value="364.29909374480843" />
+      <entry key="D1" value="457.3520486678357" />
+      <entry key="W1" value="475.83900363829497" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -153,7 +99,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "node",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
@@ -197,7 +143,7 @@
       <option name="presentableId" value="Default" />
       <updated>1788597025549</updated>
       <workItem from="1788597026621" duration="7406000" />
-      <workItem from="1788607279985" duration="12352000" />
+      <workItem from="1788607279985" duration="13224000" />
     </task>
     <servers />
   </component>
