@@ -11,7 +11,7 @@ const STEPS = [
   {
     when: 'Hour 0',
     title: 'Get the brief',
-    body: 'Every sprint drops a real, client-grade brief with a countdown attached. Check your email.',
+    body: 'Every sprint drops a real brief from a working agency, with a countdown attached. You can read it without an account.',
   },
   {
     when: 'Hours 1 to 71',
@@ -21,7 +21,7 @@ const STEPS = [
   {
     when: 'Hour 72',
     title: 'Get judged. Rise.',
-    body: 'Expert judges score every submission blind. Top performers earn points, prizes and a public rank.',
+    body: 'Industry designers score every submission blind. Top performers earn points, prizes and a public rank.',
   },
 ]
 
@@ -42,7 +42,7 @@ export function Timeline72() {
   })
 
   return (
-    <section ref={ref} className="relative h-[320vh] border-t border-white/10">
+    <section ref={ref} className="relative h-[210vh] border-t border-white/10">
       <div className="sticky top-0 flex h-svh items-center overflow-hidden px-5 pt-14 sm:px-8">
         <div className="mx-auto grid w-full max-w-6xl items-center gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>
@@ -83,7 +83,7 @@ export function Timeline72() {
                   <p className="font-mono text-xs text-signal">{step.when}</p>
                   <h3
                     className={`mt-1 font-poster text-[clamp(1.75rem,4.5vw,3.25rem)] uppercase leading-none transition-colors duration-300 ${
-                      active ? 'text-chalk' : 'text-white/30'
+                      active ? 'text-chalk' : 'text-white/55'
                     }`}
                   >
                     {step.title}

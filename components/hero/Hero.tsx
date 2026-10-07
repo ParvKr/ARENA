@@ -12,7 +12,6 @@ import { HeroMarquee } from './HeroMarquee'
 import { JudgeStroke } from './JudgeStroke'
 import { ScrambleText } from './ScrambleText'
 import { EASE, useHeroPointer } from './shared'
-import { StepBars } from './StepBars'
 import { Stickers } from './Stickers'
 
 const WORDS = ['designers', 'writers', 'builders', 'creators', 'strategists']
@@ -45,7 +44,7 @@ function RollingWord({ reduce }: { reduce: boolean }) {
   }, [reduce])
 
   return (
-    <span className="relative inline-block h-[1.25em] overflow-hidden bg-chalk px-2 align-bottom text-void">
+    <span className="relative inline-block h-[1.25em] overflow-hidden border-b-4 border-signal align-bottom text-signal">
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={index}
@@ -106,7 +105,7 @@ export function Hero() {
             <h1
               aria-label="Prove it."
               className="font-poster uppercase leading-[0.82] tracking-tight"
-              style={{ fontSize: 'clamp(4.5rem, min(26vw, calc((100svh - 32.5rem) / 1.75)), 24rem)' }}
+              style={{ fontSize: 'clamp(4.5rem, min(26vw, calc((100svh - 25rem) / 1.75)), 24rem)' }}
             >
               <span className="block">
                 <Letters word="PROVE" delay={0.45} reduce={reduce} />
@@ -120,14 +119,14 @@ export function Hero() {
               initial={reduce ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 1.5, ease: EASE }}
-              className="mt-6 max-w-[34ch] md:absolute md:bottom-3 md:left-0 md:mt-0"
+              className="mt-6 max-w-[38ch] md:absolute md:bottom-3 md:left-0 md:mt-0"
             >
               <p className="font-display text-xl font-bold leading-tight sm:text-2xl">
                 Built for <RollingWord reduce={reduce} />
               </p>
               <p className="mt-4 text-base leading-relaxed text-white/75">
-                Real briefs. Real deadlines. Real judgment. Biweekly sprints where the best work rises
-                and gets rewarded.
+                Real briefs from working agencies, judged blind by industry designers. Biweekly sprints
+                where top talent rises and wins real prizes.
               </p>
             </motion.div>
           </div>
@@ -135,9 +134,6 @@ export function Hero() {
 
         <HeroDock sprint={sprint} reduce={reduce} />
 
-        <div className="mt-6 sm:mt-8">
-          <StepBars reduce={reduce} />
-        </div>
       </div>
 
       <HeroMarquee reduce={reduce} />

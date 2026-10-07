@@ -62,13 +62,7 @@ export function Stickers({ pointer, reduce }: { pointer: HeroPointer; reduce: bo
         </div>
       </Sticker>
 
-      <Sticker {...base} depth={-50} rotate={-7} delay={1.9} className="left-[52%] top-[19%] hidden md:block">
-        <div className="rounded-full bg-chalk px-5 py-2.5 font-display text-sm font-extrabold uppercase text-void">
-          72h to ship it
-        </div>
-      </Sticker>
-
-      <Sticker {...base} depth={90} rotate={5} delay={2.1} className="bottom-[34%] right-[3%] hidden lg:block">
+      <Sticker {...base} depth={90} rotate={5} delay={2.1} className="bottom-[40%] right-[17%] hidden lg:block">
         <div className="border-2 border-signal bg-void px-4 py-2 font-poster text-xl uppercase leading-none text-chalk">
           1,200+
           <span className="ml-2 font-display text-xs font-bold normal-case text-smoke">competitors</span>

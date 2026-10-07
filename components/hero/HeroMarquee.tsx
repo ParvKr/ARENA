@@ -26,6 +26,7 @@ const wrap = (min: number, max: number, v: number) => {
 export function HeroMarquee({ reduce }: { reduce: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref)
+  const paused = useRef(false)
   const baseX = useMotionValue(0)
   const { scrollY } = useScroll()
   const velocity = useVelocity(scrollY)
@@ -35,12 +36,12 @@ export function HeroMarquee({ reduce }: { reduce: boolean }) {
   const x = useTransform(baseX, (v) => `${wrap(-100 / REPEATS, 0, v)}%`)
 
   useAnimationFrame((_, delta) => {
-    if (reduce || !inView) return
+    if (reduce || !inView || paused.current) return
     const v = boost.get()
     if (v < -0.05) direction.set(1)
     else if (v > 0.05) direction.set(-1)
-    const move = direction.get() * 1.6 * (delta / 1000)
-    baseX.set(baseX.get() + move + direction.get() * Math.abs(v) * (delta / 1000) * 1.6)
+    const move = direction.get() * 0.95 * (delta / 1000)
+    baseX.set(baseX.get() + move + direction.get() * Math.abs(v) * (delta / 1000) * 0.95)
   })
 
   const row = ITEMS.map((item, i) => (
@@ -57,7 +58,12 @@ export function HeroMarquee({ reduce }: { reduce: boolean }) {
   ))
 
   return (
-    <div ref={ref} aria-hidden className="relative z-10 -mx-[5%] mt-8 mb-5 w-[110%] -rotate-[1.4deg] overflow-hidden bg-signal py-2.5 sm:mt-10 sm:py-3">
+    <div
+      ref={ref}
+      aria-hidden
+      onPointerEnter={() => (paused.current = true)}
+      onPointerLeave={() => (paused.current = false)}
+      className="relative z-10 -mx-[5%] mt-8 mb-5 w-[110%] -rotate-[1.4deg] overflow-hidden bg-signal py-2.5 sm:mt-10 sm:py-3">
       <motion.div style={{ x, willChange: 'transform' }} className="flex w-max">
         {Array.from({ length: REPEATS }, (_, n) => (
           <div key={n} className="flex shrink-0">

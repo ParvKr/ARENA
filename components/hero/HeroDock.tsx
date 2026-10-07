@@ -15,7 +15,15 @@ export function HeroDock({ sprint, reduce }: { sprint: Sprint | null; reduce: bo
   const live = sprint?.sprint_status === 'live'
   // Captured once at mount: the sprint arrives client-side, so this never runs during SSR.
   const [mountedAt] = useState(() => Date.now())
-  const windowOpen = !!sprint?.close_at && new Date(sprint.close_at).getTime() > mountedAt
+  const open = live && !!sprint?.close_at && new Date(sprint.close_at).getTime() > mountedAt
+
+  // The status line and the button always describe the same state.
+  const status = open && sprint ? `Sprint ${sprint.sprint_number} is live` : sprint ? `Sprint ${sprint.sprint_number} has closed` : 'Next sprint dropping soon'
+  const cta = open
+    ? { href: '/sprint', label: 'Enter the sprint' }
+    : sprint
+      ? { href: '/results', label: 'See the results' }
+      : { href: '/sprint', label: 'See the sprint' }
 
   return (
     <motion.div
@@ -26,32 +34,24 @@ export function HeroDock({ sprint, reduce }: { sprint: Sprint | null; reduce: bo
     >
       <div className="flex items-center gap-3 px-4 py-2 sm:py-0">
         <span className="relative flex h-2 w-2">
-          {live && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />}
-          <span className={`relative inline-flex h-2 w-2 rounded-full ${live ? 'bg-signal' : 'bg-smoke'}`} />
+          {open && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />}
+          <span className={`relative inline-flex h-2 w-2 rounded-full ${open ? 'bg-signal' : 'bg-smoke'}`} />
         </span>
-        <span className="font-mono text-xs text-chalk">
-          {live && sprint ? `Sprint ${sprint.sprint_number} is live` : 'Next sprint dropping soon'}
-        </span>
-        {live && sprint?.close_at && (
+        <span className="font-mono text-xs text-chalk">{status}</span>
+        {open && sprint?.close_at && (
           <span className="flex items-center gap-1.5 font-mono text-xs text-smoke">
-            {windowOpen ? (
-              <>
-                closes in <CountdownTimer targetDate={sprint.close_at} compact />
-              </>
-            ) : (
-              'submissions closed'
-            )}
+            closes in <CountdownTimer targetDate={sprint.close_at} compact />
           </span>
         )}
       </div>
 
       <Magnetic reduce={reduce}>
         <Link
-          href="/sprint"
+          href={cta.href}
           data-cursor="Enter"
           className="group flex items-center justify-center gap-2 rounded-full bg-signal px-6 py-3.5 font-display text-sm font-bold text-chalk transition-colors hover:bg-chalk hover:text-void"
         >
-          {live ? 'Enter the sprint' : 'See the sprint'}
+          {cta.label}
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </Link>
       </Magnetic>
@@ -59,9 +59,9 @@ export function HeroDock({ sprint, reduce }: { sprint: Sprint | null; reduce: bo
       <Link
         href="/signup"
         data-cursor="Join"
-        className="flex items-center justify-center rounded-full border border-white/25 px-5 py-3.5 font-display text-sm font-bold text-chalk transition-colors hover:border-chalk hover:bg-white/10"
+        className="px-5 py-3 text-center font-display text-sm font-semibold text-smoke underline decoration-white/30 underline-offset-4 transition-colors hover:text-chalk hover:decoration-chalk"
       >
-        Create account, it&apos;s free
+        Create a free account
       </Link>
     </motion.div>
   )

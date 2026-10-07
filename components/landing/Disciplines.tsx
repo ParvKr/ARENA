@@ -14,8 +14,9 @@ const DISCIPLINES = [
 ]
 
 export function Disciplines() {
+  // -mt: overlaps the empty tail of the pinned clock stage above, so there is no dead black gap
   return (
-    <section className="bg-signal px-5 py-24 text-chalk sm:px-8 sm:py-32">
+    <section className="relative z-10 -mt-[14svh] bg-signal px-5 py-24 text-chalk sm:px-8 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <h2 className="font-poster text-[clamp(2.5rem,7vw,6rem)] uppercase leading-[0.88]">

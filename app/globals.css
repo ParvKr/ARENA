@@ -140,22 +140,6 @@ infinite; }
   .hero-float { animation: none; }
 }
 
-@keyframes stepFill {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-.step-fill {
-  transform-origin: left center;
-  animation: stepFill 5.5s linear forwards;
-}
-.step-bars:hover .step-fill,
-.step-bars:focus-within .step-fill {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .step-fill { animation: none; transform: scaleX(1); }
-}
-
 /* ── Reduced motion ──────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
  *, *::before, *::after {
