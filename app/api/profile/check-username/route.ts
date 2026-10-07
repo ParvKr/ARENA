@@ -25,8 +25,10 @@ export interface UsernameAvailabilityResponse {
 }
 
 export async function GET(req: Request): Promise<NextResponse<UsernameAvailabilityResponse>> {
+  // Outside the try/catch: connection() rejects during prerender to opt out of static
+  // generation, and that signal must reach Next.js rather than be logged as an error.
+  await connection();
   try {
-    await connection();
     const { searchParams } = new URL(req.url);
     
     // Zod now safely handles mixed-case requests like "Parv01" without crashing

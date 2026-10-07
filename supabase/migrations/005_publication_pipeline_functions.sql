@@ -17,6 +17,13 @@ AS $$
 DECLARE
     v_updated_results integer;
 BEGIN
+    IF auth.role() <> 'service_role' AND NOT EXISTS (
+        SELECT 1 FROM public.profiles
+        WHERE user_id = auth.uid() AND arena_role = 'admin'
+    ) THEN
+        RAISE EXCEPTION 'Access denied';
+    END IF;
+
     UPDATE public.results
     SET published_at = p_published_at
     WHERE sprint_id = p_sprint_id

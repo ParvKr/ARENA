@@ -4,7 +4,7 @@
 // Full create-sprint form wired to POST /api/admin/sprint.
 // Mirrors CreateSprintSchema field-for-field.
 
-import { useState, useActionState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -288,7 +288,7 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
             className="flex items-center gap-3 rounded-lg border border-[#4ADE80]/30 bg-[#4ADE80]/5 p-4"
           >
             <CheckCircle2 className="h-4 w-4 text-[#4ADE80] shrink-0" />
-            <p className="font-mono text-xs text-[#4ADE80]">Sprint created successfully. It's now in draft — publish it when ready.</p>
+            <p className="font-mono text-xs text-[#4ADE80]">Sprint created successfully. It&apos;s now in draft — publish it when ready.</p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -6,6 +6,38 @@
   <component name="ChangeListManager">
     <list default="true" id="5f88a369-2b0b-4622-9777-e5e8dac96fa9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/CreateSprintForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/CreateSprintForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/admin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/profile/check-username/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/profile/check-username/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/sprint/current/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/current/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/judge/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/judge/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/plans/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/plans/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/profile/[username]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/profile/[username]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/results/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/results/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/sprint/submit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sprint/submit/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/LiveSprintCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/NavBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SkillRank.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/StatsGrid.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/WelcomeRow.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/avatar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/badge.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/dialog.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/dropdown-menu.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/progress.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/sonner.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/tabs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/textarea.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/sprint.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/sprint.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supabase/migrations/004_functions.sql" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/migrations/004_functions.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supabase/migrations/005_publication_pipeline_functions.sql" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/migrations/005_publication_pipeline_functions.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.mjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,23 +56,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.4342115728393074" />
-      <entry key="MS500" value="3.6854895945788693" />
-      <entry key="S2" value="5.757621292231224" />
-      <entry key="S5" value="6.485517744881909" />
-      <entry key="S10" value="7.713139166267527" />
-      <entry key="S30" value="17.543306851897075" />
-      <entry key="S60" value="26.464151378722043" />
-      <entry key="M2" value="33.45962677750784" />
-      <entry key="M5" value="38.825110340731946" />
-      <entry key="M10" value="41.209633146280346" />
-      <entry key="M15" value="45.20378644849383" />
-      <entry key="M30" value="81.15899404041902" />
-      <entry key="H1" value="172.00478161177438" />
-      <entry key="H2" value="279.92358420538187" />
-      <entry key="H4" value="364.29926386290447" />
-      <entry key="D1" value="457.3520834953784" />
-      <entry key="W1" value="475.8390088003107" />
+      <entry key="MS100" value="1.0000038688944428" />
+      <entry key="MS500" value="1.189647843303252" />
+      <entry key="S2" value="2.5258398981861974" />
+      <entry key="S5" value="4.870504669379587" />
+      <entry key="S10" value="12.839043873860666" />
+      <entry key="S30" value="42.01468520895232" />
+      <entry key="S60" value="60.66357867471856" />
+      <entry key="M2" value="76.1225423754833" />
+      <entry key="M5" value="100.51027699688788" />
+      <entry key="M10" value="120.45727940164957" />
+      <entry key="M15" value="132.16776339310115" />
+      <entry key="M30" value="172.5706289367397" />
+      <entry key="H1" value="263.9118840271511" />
+      <entry key="H2" value="376.1432096718226" />
+      <entry key="H4" value="466.4352905691087" />
+      <entry key="D1" value="568.081849148553" />
+      <entry key="W1" value="588.5015710624186" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -62,23 +94,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.3948825618666094" />
-      <entry key="MS500" value="3.654341389203735" />
-      <entry key="S2" value="5.737534742347977" />
-      <entry key="S5" value="6.475253588699217" />
-      <entry key="S10" value="7.705876559493554" />
-      <entry key="S30" value="17.53500190330801" />
-      <entry key="S60" value="26.45727596172299" />
-      <entry key="M2" value="33.45511132223394" />
-      <entry key="M5" value="38.82297170708789" />
-      <entry key="M10" value="41.208498835036444" />
-      <entry key="M15" value="45.203001224052386" />
-      <entry key="M30" value="81.1585045488587" />
-      <entry key="H1" value="172.00440554183314" />
-      <entry key="H2" value="279.92331237837834" />
-      <entry key="H4" value="364.29909374480843" />
-      <entry key="D1" value="457.3520486678357" />
-      <entry key="W1" value="475.83900363829497" />
+      <entry key="MS100" value="0.0011100058563320362" />
+      <entry key="MS500" value="0.4422474048704111" />
+      <entry key="S2" value="2.2288784102005796" />
+      <entry key="S5" value="4.735160963733933" />
+      <entry key="S10" value="12.76399998632578" />
+      <entry key="S30" value="41.98430770898851" />
+      <entry key="S60" value="60.646900971359955" />
+      <entry key="M2" value="76.11345355061913" />
+      <entry key="M5" value="100.50575887253703" />
+      <entry key="M10" value="120.45456107499466" />
+      <entry key="M15" value="132.16578441388845" />
+      <entry key="M30" value="172.56946781991" />
+      <entry key="H1" value="263.91115384017843" />
+      <entry key="H2" value="376.1427531979308" />
+      <entry key="H4" value="466.4350247643724" />
+      <entry key="D1" value="568.081797655878" />
+      <entry key="W1" value="588.5015634974935" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -90,29 +122,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "node",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/parvgurung/Web/ARENA/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/parvgurung/Web/ARENA&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AcpAgentsConfigurable&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/parvgurung/Web/ARENA/node_modules/typescript/lib&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="npm.Next.js: server-side">
     <configuration name="Next.js: debug client-side" type="JavascriptDebugType" uri="http://localhost:3000/">
       <method v="2" />
@@ -131,7 +165,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.8665.341" />
+        <option value="bundled-python-sdk-821f704e66d9-5bd6d13a2a75-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-262.9437.214" />
       </set>
     </attachedChunks>
   </component>
@@ -143,7 +177,10 @@
       <option name="presentableId" value="Default" />
       <updated>1788597025549</updated>
       <workItem from="1788597026621" duration="7406000" />
-      <workItem from="1788607279985" duration="13224000" />
+      <workItem from="1788607279985" duration="13394000" />
+      <workItem from="1788684984150" duration="7884000" />
+      <workItem from="1788981386306" duration="4449000" />
+      <workItem from="1789586521009" duration="27000" />
     </task>
     <servers />
   </component>

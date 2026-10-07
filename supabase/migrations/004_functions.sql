@@ -39,6 +39,16 @@ DECLARE
     v_total_assigned integer;
     v_total_scored   integer;
 BEGIN
+    IF NOT (
+        p_judge_id = auth.uid()
+        OR EXISTS (
+            SELECT 1 FROM public.profiles
+            WHERE user_id = auth.uid() AND arena_role = 'admin'
+        )
+    ) THEN
+        RAISE EXCEPTION 'Access denied';
+    END IF;
+
     -- Verify first that the judge is actually assigned to this sprint
     IF EXISTS (
         SELECT 1 FROM public.judging_assignments

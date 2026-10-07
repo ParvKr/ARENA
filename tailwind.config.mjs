@@ -32,11 +32,38 @@ const config = {
           gray: '#737380',
           'gray-l': '#A3A3B0',
         },
+        // ── Brutalist editorial palette (redesign, phase 1: homepage + shared nav) ──
+        paper: {
+          DEFAULT: '#F1ECDE',
+          deep: '#E6DFCC',
+          line: '#141310',
+        },
+        ink: {
+          DEFAULT: '#141310',
+          soft: '#57534A',
+          faint: '#8C8776',
+        },
+        stamp: {
+          DEFAULT: '#C41E1A',
+          dark: '#8C1512',
+        },
+        // ── Arena stage palette (hero + nav): black / signal red / white ──
+        void: {
+          DEFAULT: '#0A0A0A',
+          soft: '#151515',
+        },
+        signal: {
+          DEFAULT: '#FF2B1C',
+          deep: '#8E0F0A',
+        },
+        chalk: '#FFFFFF',
+        smoke: '#9A9A9A',
       },
       fontFamily: {
-        display: ['Syne', 'sans-serif'],
-        body: ['DM Sans', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        display: ['var(--font-display)', 'sans-serif'],
+        poster: ['var(--font-poster)', 'sans-serif'],
+        body: ['var(--font-body)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       animation: {
         'rank-up': 'rankUp 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards',

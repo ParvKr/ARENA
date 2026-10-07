@@ -2,9 +2,8 @@
 
 import useSWR from 'swr';
 import { useParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { Trophy, Star, Medal, Zap, LayoutDashboard, Crown, Sparkles, TrendingUp, ChevronRight, Clock, Target } from 'lucide-react';
+import { Trophy, Star, Medal, Zap, Crown, Sparkles, ChevronRight, Target } from 'lucide-react';
 import { XPBar } from '@/components/XPBar';
 import { ProfileSkeleton } from '@/components/SkeletonLoaders';
 import type { Profile, Submission, Result, Sprint, RankTier } from '@/types/api.types';

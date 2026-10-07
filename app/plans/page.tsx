@@ -161,7 +161,7 @@ export default function PlansPage() {
             Compete at your level.
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-[#737380]">
-            Start free. Upgrade when you're ready to get serious about being seen.
+            Start free. Upgrade when you&apos;re ready to get serious about being seen.
           </p>
 
           {/* Current plan pill (logged-in users) */}
@@ -169,7 +169,7 @@ export default function PlansPage() {
             <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-[#1C1C26] bg-[#0A0A0F] px-4 py-2">
               <span className="h-1.5 w-1.5 rounded-full bg-[#7C5CFF]" />
               <span className="font-mono text-xs text-[#A3A3B0]">
-                You're on the{' '}
+                You&apos;re on the{' '}
                 <span className="font-bold text-white">
                   {PLANS.find((p) => p.id === currentPlanId)?.name}
                 </span>{' '}

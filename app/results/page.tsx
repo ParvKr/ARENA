@@ -46,7 +46,7 @@ export default function ResultsPage() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="mb-10 grid grid-cols-3 gap-3"
         >
-          {MOCK_RESULTS.slice(0, 3).map((r, i) => (
+          {MOCK_RESULTS.slice(0, 3).map((r) => (
             <div
               key={r.username}
               className="flex flex-col items-center gap-3 rounded-xl border bg-[#0A0A0F] p-6 text-center"

@@ -11,8 +11,9 @@ import { createSupabaseServerClient } from '@/lib/supabase/server';
  * Public endpoint.
  */
 export async function GET(): Promise<Response> {
+  // Outside the try/catch so Next.js can use the rejection to opt out of prerendering.
+  await connection();
   try {
-    await connection();
     const supabaseClient = await createSupabaseServerClient();
 
     const sprint = await getCurrentSprint(supabaseClient);

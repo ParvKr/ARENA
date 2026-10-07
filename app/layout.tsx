@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono, Syne } from 'next/font/google';
+import { Inter, JetBrains_Mono, Syne, Anton } from 'next/font/google';
 
 import { NavBar } from '@/components/NavBar';
 import ToastSystem from '@/components/ToastSystem';
@@ -27,6 +27,14 @@ const jetbrains = JetBrains_Mono({
   display: 'swap',
 });
 
+// Oversized condensed poster face for the editorial redesign (masthead + big display type)
+const anton = Anton({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-poster',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   title: "Arena - Prove What You're Made Of",
@@ -44,7 +52,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`dark ${syne.variable} ${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`dark ${syne.variable} ${inter.variable} ${jetbrains.variable} ${anton.variable}`}>
       <body className="bg-arena-bg text-arena-offwhite font-body antialiased">
         <AuthProvider>
           <Suspense fallback={<div className="h-14" />}>

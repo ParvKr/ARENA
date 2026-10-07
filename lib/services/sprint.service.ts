@@ -364,7 +364,7 @@ export async function updateSprint(sprintId: string, input: UpdateSprintInput, a
   const admin = getSupabaseAdmin();
   const { data, error } = await admin
     .from('sprints')
-    .update(input as any)
+    .update(input as Database['public']['Tables']['sprints']['Update'])
     .eq('id', sprintId)
     .select()
     .single();

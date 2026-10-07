@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useSWR from 'swr';
 import {
   Upload, CheckCircle2, X, FileText,
-  Image as ImageIcon, Loader2, File, AlertCircle
+  Loader2, File, AlertCircle
 } from 'lucide-react';
 import { useArenaStore } from '@/lib/store';
 
@@ -261,6 +261,7 @@ function SubmitForm() {
                   {wip.uploading ? (
                     <Loader2 className="h-5 w-5 animate-spin text-[#7C5CFF]" />
                   ) : wip.file.type.startsWith('image/') && wip.url ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- user-uploaded preview URL, not a known remote host
                     <img src={wip.url} alt="WIP" className="h-full w-full object-cover" />
                   ) : (
                     <FileText className="h-8 w-8 text-[#737380]" />

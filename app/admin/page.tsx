@@ -1,42 +1,29 @@
 import { redirect } from 'next/navigation';
+import { requireAuth } from '@/lib/middleware/auth';
+import { requireProfileRole, RoleError } from '@/lib/middleware/roles';
+import { AuthError } from '@/lib/middleware/auth';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import type { ArenaRole, SprintStatus } from '@/types/api.types';
 import { CreateSprintForm } from './CreateSprintForm';
-import { SprintManagement } from './SprintManagement';
-
-type AdminSprintRow = {
-  id: string;
-  sprint_number: number;
-  title: string;
-  discipline: string;
-  sprint_status: SprintStatus;
-  open_at: string;
-  close_at: string;
-  results_at: string | null;
-  brief_content: unknown;
-  prize_data: unknown;
-};
-
-const STATUS_STYLES: Record<SprintStatus, string> = {
-  draft:    'border-[#2C2C3A] text-[#737380] bg-[#0A0A0F]',
-  live:     'border-[#4ADE80]/40 text-[#4ADE80] bg-[#4ADE80]/5',
-  judging:  'border-[#45B7D1]/40 text-[#45B7D1] bg-[#45B7D1]/5',
-  complete: 'border-[#FFD700]/40 text-[#FFD700] bg-[#FFD700]/5',
-};
+import { SprintManagement, type SprintRow } from './SprintManagement';
 
 export default async function AdminPage() {
+  let user;
+  try {
+    user = await requireAuth();
+  } catch (error) {
+    if (error instanceof AuthError) redirect('/signin?next=/admin');
+    throw error;
+  }
+
+  let profile;
+  try {
+    profile = await requireProfileRole(user.id, 'admin');
+  } catch (error) {
+    if (error instanceof RoleError) redirect('/sprint');
+    throw error;
+  }
+
   const supabase = await createSupabaseServerClient();
-  const { data: { session } } = await supabase.auth.getSession();
-
-  if (!session) redirect('/signin?next=/admin');
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('arena_role, display_name')
-    .eq('user_id', session.user.id)
-    .single();
-
-  if ((profile?.arena_role as ArenaRole | undefined) !== 'admin') redirect('/sprint');
 
   const [
     { count: sprintCount },
@@ -52,7 +39,7 @@ export default async function AdminPage() {
 
   // Next sprint number to pre-populate the form
   const nextSprintNumber = (sprintCount ?? 0) + 1;
-  const sprints = (recentSprints ?? []) as AdminSprintRow[];
+  const sprints = (recentSprints ?? []) as unknown as SprintRow[];
 
   return (
     <div className="min-h-screen bg-[#050507] pt-14 pb-20 text-[#F5F5F7]">
@@ -99,7 +86,7 @@ export default async function AdminPage() {
 
           {/* ── Sprint Management panel ── */}
           <div className="xl:col-span-5">
-            <SprintManagement sprints={sprints as any} />
+            <SprintManagement sprints={sprints} />
           </div>
 
         </div>
