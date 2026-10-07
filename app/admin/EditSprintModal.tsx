@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { SPRINT_DISCIPLINES } from '@/lib/validators/sprint.schema';
-import type { SprintRow } from './SprintManagement';
+import type { SprintRow } from './types';
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 
@@ -38,12 +38,12 @@ function Field({ label, hint, error, children }: {
   return (
     <div className="space-y-1.5">
       <div className="flex items-baseline justify-between">
-        <label className="font-mono text-xs font-bold uppercase tracking-wider text-[#A3A3B0]">{label}</label>
-        {hint && <span className="font-mono text-[10px] text-[#3A3A50]">{hint}</span>}
+        <label className="font-mono text-xs font-bold uppercase tracking-wider text-white/75">{label}</label>
+        {hint && <span className="font-mono text-[10px] text-white/45">{hint}</span>}
       </div>
       {children}
       {error && (
-        <p className="flex items-center gap-1 font-mono text-[11px] text-[#FF2D55]">
+        <p className="flex items-center gap-1 font-mono text-[11px] text-signal">
           <AlertCircle className="h-3 w-3" />{error}
         </p>
       )}
@@ -51,7 +51,7 @@ function Field({ label, hint, error, children }: {
   );
 }
 
-const inputCls = 'w-full rounded-lg border border-[#1C1C26] bg-[#050507] px-3 py-2.5 text-sm text-[#F5F5F7] placeholder-[#3A3A50] outline-none transition focus:border-[#7C5CFF] focus:ring-1 focus:ring-[#7C5CFF]/30';
+const inputCls = 'w-full rounded-lg border border-white/15 bg-void px-3 py-2.5 text-sm text-chalk placeholder-white/45 outline-none transition focus:border-signal focus:ring-1 focus:ring-signal/30';
 const textareaCls = `${inputCls} resize-none leading-relaxed`;
 
 // ─── COLLAPSIBLE SECTION ──────────────────────────────────────────────────────
@@ -62,14 +62,14 @@ function Section({ title, children, defaultOpen = true }: {
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border border-[#1C1C26] rounded-xl overflow-hidden">
+    <div className="border border-white/15 rounded-xl overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="flex w-full items-center justify-between px-5 py-3.5 bg-[#101017] text-left hover:bg-[#1C1C26] transition-colors"
+        className="flex w-full items-center justify-between px-5 py-3.5 bg-white/[0.05] text-left hover:bg-white/10 transition-colors"
       >
-        <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#737380]">{title}</span>
-        {open ? <ChevronUp className="h-4 w-4 text-[#737380]" /> : <ChevronDown className="h-4 w-4 text-[#737380]" />}
+        <span className="font-mono text-xs font-bold uppercase tracking-widest text-smoke">{title}</span>
+        {open ? <ChevronUp className="h-4 w-4 text-smoke" /> : <ChevronDown className="h-4 w-4 text-smoke" />}
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -196,18 +196,18 @@ export function EditSprintModal({ sprint, onClose, onSaved }: EditSprintModalPro
         animate={{ x: 0 }}
         exit={{ x: '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-        className="fixed inset-y-0 right-0 z-50 flex w-full max-w-xl flex-col bg-[#0A0A0F] border-l border-[#1C1C26] shadow-2xl"
+        className="fixed inset-y-0 right-0 z-50 flex w-full max-w-xl flex-col bg-void border-l border-white/15 shadow-2xl"
       >
         {/* Header */}
-        <div className="flex shrink-0 items-center justify-between border-b border-[#1C1C26] bg-[#101017] px-6 py-4">
+        <div className="flex shrink-0 items-center justify-between border-b border-white/15 bg-white/[0.05] px-6 py-4">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[#7C5CFF]">Admin • Sprint #{sprint.sprint_number}</p>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-signal">Admin • Sprint #{sprint.sprint_number}</p>
             <h2 className="font-display text-base font-bold text-white">Edit Sprint</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-[#1C1C26] p-2 text-[#737380] transition-colors hover:border-[#2C2C3A] hover:text-white"
+            className="rounded-lg border border-white/15 p-2 text-smoke transition-colors hover:border-white/25 hover:text-white"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
@@ -314,8 +314,8 @@ export function EditSprintModal({ sprint, onClose, onSaved }: EditSprintModalPro
             {/* ── Prize Data ── */}
             <Section title="Prize Data" defaultOpen={false}>
               <div className="space-y-4">
-                <div className="rounded-lg border border-[#FFD700]/20 bg-[#FFD700]/5 p-4 space-y-3">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#FFD700]">1st Place</span>
+                <div className="rounded-lg border border-signal/20 bg-signal/5 p-4 space-y-3">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-signal">1st Place</span>
                   <Field label="Description">
                     <input type="text" value={firstDesc} onChange={e => setFirstDesc(e.target.value)} className={inputCls} />
                   </Field>
@@ -335,8 +335,8 @@ export function EditSprintModal({ sprint, onClose, onSaved }: EditSprintModalPro
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-[#A3A3B0]/20 bg-[#A3A3B0]/5 p-4 space-y-3">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#A3A3B0]">2nd Place</span>
+                <div className="rounded-lg border border-white/20 bg-white/5 p-4 space-y-3">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white/75">2nd Place</span>
                   <Field label="Description">
                     <input type="text" value={secondDesc} onChange={e => setSecondDesc(e.target.value)} className={inputCls} />
                   </Field>
@@ -345,8 +345,8 @@ export function EditSprintModal({ sprint, onClose, onSaved }: EditSprintModalPro
                   </Field>
                 </div>
 
-                <div className="rounded-lg border border-[#CD7F32]/20 bg-[#CD7F32]/5 p-4 space-y-3">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#CD7F32]">3rd Place</span>
+                <div className="rounded-lg border border-smoke/20 bg-smoke/5 p-4 space-y-3">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-smoke">3rd Place</span>
                   <Field label="Description">
                     <input type="text" value={thirdDesc} onChange={e => setThirdDesc(e.target.value)} className={inputCls} />
                   </Field>
@@ -364,10 +364,10 @@ export function EditSprintModal({ sprint, onClose, onSaved }: EditSprintModalPro
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="flex items-start gap-3 rounded-lg border border-[#FF2D55]/30 bg-[#FF2D55]/5 p-4"
+                  className="flex items-start gap-3 rounded-lg border border-signal/30 bg-signal/5 p-4"
                 >
-                  <AlertCircle className="h-4 w-4 text-[#FF2D55] mt-0.5 shrink-0" />
-                  <p className="font-mono text-xs text-[#FF2D55]">{serverError}</p>
+                  <AlertCircle className="h-4 w-4 text-signal mt-0.5 shrink-0" />
+                  <p className="font-mono text-xs text-signal">{serverError}</p>
                 </motion.div>
               )}
               {status === 'success' && (
@@ -375,28 +375,28 @@ export function EditSprintModal({ sprint, onClose, onSaved }: EditSprintModalPro
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="flex items-center gap-3 rounded-lg border border-[#4ADE80]/30 bg-[#4ADE80]/5 p-4"
+                  className="flex items-center gap-3 rounded-lg border border-chalk/30 bg-chalk/5 p-4"
                 >
-                  <CheckCircle2 className="h-4 w-4 text-[#4ADE80] shrink-0" />
-                  <p className="font-mono text-xs text-[#4ADE80]">Sprint updated successfully.</p>
+                  <CheckCircle2 className="h-4 w-4 text-chalk shrink-0" />
+                  <p className="font-mono text-xs text-chalk">Sprint updated successfully.</p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
           {/* ── Sticky footer ── */}
-          <div className="shrink-0 border-t border-[#1C1C26] bg-[#0A0A0F] px-6 py-4 flex gap-3">
+          <div className="shrink-0 border-t border-white/15 bg-void px-6 py-4 flex gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-xl border border-[#1C1C26] py-3 font-display text-sm font-bold text-[#737380] transition-all hover:border-[#2C2C3A] hover:text-white"
+              className="flex-1 rounded-xl border border-white/15 py-3 font-display text-sm font-bold text-smoke transition-all hover:border-white/25 hover:text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[#7C5CFF] py-3 font-display text-sm font-bold text-white transition-all hover:bg-[#9070FF] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-signal py-3 font-display text-sm font-bold text-white transition-all hover:bg-signal disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ boxShadow: '0 0 24px rgba(124,92,255,0.35)' }}
             >
               {status === 'loading' ? (

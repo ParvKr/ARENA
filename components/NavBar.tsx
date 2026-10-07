@@ -23,6 +23,10 @@ export function NavBar() {
   const pathname = usePathname();
   const { user } = useArenaStore();
   const { sprint } = useCurrentSprint();
+  // "Live" means the status says live AND the window hasn't closed (status alone can be stale).
+  const [mountedAt] = useState(() => Date.now());
+  const sprintOpen =
+    sprint?.sprint_status === 'live' && !!sprint.close_at && new Date(sprint.close_at).getTime() > mountedAt;
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -38,6 +42,9 @@ export function NavBar() {
   const initial = (user?.display_name?.[0] ?? user?.username?.[0] ?? 'U').toUpperCase();
 
   const closeMobile = () => setMobileOpen(false);
+
+  // The auth pages carry their own logo and need no distractions.
+  if (pathname === '/signin' || pathname === '/signup') return null;
 
   return (
     <>
@@ -58,7 +65,7 @@ export function NavBar() {
             <span className="font-poster text-xl tracking-[0.1em] uppercase text-chalk">
               ARENA
             </span>
-            {sprint?.sprint_status === 'live' && (
+            {sprintOpen && (
               <span className="rounded-sm bg-signal px-1.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-chalk">
                 Live
               </span>
@@ -77,7 +84,7 @@ export function NavBar() {
                 {isAdmin && <NavLink href="/admin" label="Admin" pathname={pathname} />}
               </>
             )}
-            {sprint?.close_at && sprint.sprint_status === 'live' && (
+            {sprint?.close_at && sprintOpen && (
               <div className="ml-4 flex items-center gap-2 rounded-sm border border-white/15 bg-white/5 px-3 py-1">
                 <span className="h-1.5 w-1.5 rounded-full bg-signal animate-pulse" />
                 <CountdownTimer targetDate={sprint.close_at} compact />

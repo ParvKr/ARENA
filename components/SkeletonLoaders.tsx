@@ -22,39 +22,6 @@ function Sk({ className, style }: SkeletonProps) {
   );
 }
 
-export function SprintPageSkeleton() {
-  // Deterministic heights used explicitly for layout box constraints
-  const structuralHeights = [100, 60, 80, 120, 40];
-
-  return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8 pt-24">
-      <div className="space-y-3">
-        <div className="flex gap-3">
-          <Sk className="h-5 w-24" />
-          <Sk className="h-5 w-32" />
-        </div>
-
-        <Sk className="h-10 w-2/3" />
-        <Sk className="h-10 w-40" />
-      </div>
-
-      <Sk className="h-16 w-full" />
-
-      <div className="space-y-4">
-        {structuralHeights.map((h, i) => (
-          <Sk
-            key={`sprint-sk-${i}`}
-            className="w-full"
-            style={{ height: h }}
-          />
-        ))}
-      </div>
-
-      <Sk className="h-14 w-full" />
-    </div>
-  );
-}
-
 export function ResultsSkeleton() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 pt-24">

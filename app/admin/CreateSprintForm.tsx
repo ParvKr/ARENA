@@ -55,12 +55,12 @@ function Field({ label, hint, error, children }: {
   return (
     <div className="space-y-1.5">
       <div className="flex items-baseline justify-between">
-        <label className="font-mono text-xs font-bold uppercase tracking-wider text-[#A3A3B0]">{label}</label>
-        {hint && <span className="font-mono text-[10px] text-[#3A3A50]">{hint}</span>}
+        <label className="font-mono text-xs font-bold uppercase tracking-wider text-white/75">{label}</label>
+        {hint && <span className="font-mono text-[10px] text-white/45">{hint}</span>}
       </div>
       {children}
       {error && (
-        <p className="flex items-center gap-1 font-mono text-[11px] text-[#FF2D55]">
+        <p className="flex items-center gap-1 font-mono text-[11px] text-signal">
           <AlertCircle className="h-3 w-3" />{error}
         </p>
       )}
@@ -68,7 +68,7 @@ function Field({ label, hint, error, children }: {
   );
 }
 
-const inputCls = 'w-full rounded-lg border border-[#1C1C26] bg-[#050507] px-3 py-2.5 text-sm text-[#F5F5F7] placeholder-[#3A3A50] outline-none transition focus:border-[#7C5CFF] focus:ring-1 focus:ring-[#7C5CFF]/30';
+const inputCls = 'w-full rounded-lg border border-white/15 bg-void px-3 py-2.5 text-sm text-chalk placeholder-white/45 outline-none transition focus:border-signal focus:ring-1 focus:ring-signal/30';
 const textareaCls = `${inputCls} resize-none leading-relaxed`;
 
 // ─── SECTION TOGGLE ───────────────────────────────────────────────────
@@ -79,14 +79,14 @@ function Section({ title, children, defaultOpen = true }: {
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="border border-[#1C1C26] rounded-xl overflow-hidden">
+    <div className="border border-white/15 rounded-xl overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
-        className="flex w-full items-center justify-between px-5 py-3.5 bg-[#101017] text-left hover:bg-[#1C1C26] transition-colors"
+        className="flex w-full items-center justify-between px-5 py-3.5 bg-white/[0.05] text-left hover:bg-white/10 transition-colors"
       >
-        <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#737380]">{title}</span>
-        {open ? <ChevronUp className="h-4 w-4 text-[#737380]" /> : <ChevronDown className="h-4 w-4 text-[#737380]" />}
+        <span className="font-mono text-xs font-bold uppercase tracking-widest text-smoke">{title}</span>
+        {open ? <ChevronUp className="h-4 w-4 text-smoke" /> : <ChevronDown className="h-4 w-4 text-smoke" />}
       </button>
       <AnimatePresence initial={false}>
         {open && (
@@ -106,7 +106,7 @@ function Section({ title, children, defaultOpen = true }: {
 }
 
 // ─── MAIN FORM ────────────────────────────────────────────────────────
-export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: number }) {
+export function CreateSprintForm({ nextSprintNumber, onCreated }: { nextSprintNumber: number; onCreated?: () => void }) {
   const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [serverError, setServerError] = useState<string | null>(null);
@@ -168,6 +168,7 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
       setStatus('success');
       reset({ sprint_number: nextSprintNumber + 1 });
       router.refresh(); // Refresh the server component to update the sprints list
+      if (onCreated) setTimeout(onCreated, 1200);
     } catch (err) {
       setStatus('error');
       setServerError(err instanceof Error ? err.message : 'Unknown error');
@@ -230,8 +231,8 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
       {/* ── Prizes ── */}
       <Section title="Prize Data" defaultOpen={false}>
         <div className="space-y-4">
-          <div className="rounded-lg border border-[#FFD700]/20 bg-[#FFD700]/5 p-4 space-y-3">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#FFD700]">1st Place</span>
+          <div className="rounded-lg border border-signal/20 bg-signal/5 p-4 space-y-3">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-signal">1st Place</span>
             <Field label="Description" error={errors.prize_first_desc?.message}>
               <input type="text" {...register('prize_first_desc')} placeholder="$5,000 cash + Adobe CC annual license" className={inputCls} />
             </Field>
@@ -245,8 +246,8 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
             </div>
           </div>
 
-          <div className="rounded-lg border border-[#A3A3B0]/20 bg-[#A3A3B0]/5 p-4 space-y-3">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#A3A3B0]">2nd Place</span>
+          <div className="rounded-lg border border-white/20 bg-white/5 p-4 space-y-3">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white/75">2nd Place</span>
             <Field label="Description" error={errors.prize_second_desc?.message}>
               <input type="text" {...register('prize_second_desc')} placeholder="$2,000 cash + 6 months Pro membership" className={inputCls} />
             </Field>
@@ -255,8 +256,8 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
             </Field>
           </div>
 
-          <div className="rounded-lg border border-[#CD7F32]/20 bg-[#CD7F32]/5 p-4 space-y-3">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#CD7F32]">3rd Place</span>
+          <div className="rounded-lg border border-smoke/20 bg-smoke/5 p-4 space-y-3">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-smoke">3rd Place</span>
             <Field label="Description" error={errors.prize_third_desc?.message}>
               <input type="text" {...register('prize_third_desc')} placeholder="$1,000 cash" className={inputCls} />
             </Field>
@@ -274,10 +275,10 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="flex items-start gap-3 rounded-lg border border-[#FF2D55]/30 bg-[#FF2D55]/5 p-4"
+            className="flex items-start gap-3 rounded-lg border border-signal/30 bg-signal/5 p-4"
           >
-            <AlertCircle className="h-4 w-4 text-[#FF2D55] mt-0.5 shrink-0" />
-            <p className="font-mono text-xs text-[#FF2D55]">{serverError}</p>
+            <AlertCircle className="h-4 w-4 text-signal mt-0.5 shrink-0" />
+            <p className="font-mono text-xs text-signal">{serverError}</p>
           </motion.div>
         )}
         {status === 'success' && (
@@ -285,10 +286,10 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="flex items-center gap-3 rounded-lg border border-[#4ADE80]/30 bg-[#4ADE80]/5 p-4"
+            className="flex items-center gap-3 rounded-lg border border-chalk/30 bg-chalk/5 p-4"
           >
-            <CheckCircle2 className="h-4 w-4 text-[#4ADE80] shrink-0" />
-            <p className="font-mono text-xs text-[#4ADE80]">Sprint created successfully. It&apos;s now in draft — publish it when ready.</p>
+            <CheckCircle2 className="h-4 w-4 text-chalk shrink-0" />
+            <p className="font-mono text-xs text-chalk">Sprint created successfully. It&apos;s now in draft — publish it when ready.</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -297,7 +298,7 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#7C5CFF] py-3.5 font-display text-sm font-bold text-white transition-all hover:bg-[#9070FF] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-2 rounded-xl bg-signal py-3.5 font-display text-sm font-bold text-white transition-all hover:bg-signal disabled:opacity-50 disabled:cursor-not-allowed"
         style={{ boxShadow: '0 0 24px rgba(124,92,255,0.35)' }}
       >
         {status === 'loading' ? (
@@ -307,7 +308,7 @@ export function CreateSprintForm({ nextSprintNumber }: { nextSprintNumber: numbe
         )}
       </button>
 
-      <p className="text-center font-mono text-[11px] text-[#3A3A50]">
+      <p className="text-center font-mono text-[11px] text-white/45">
         Sprint will be saved as draft. Use publish controls to make it live.
       </p>
     </form>

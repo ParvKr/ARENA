@@ -3,8 +3,8 @@ import { requireAuth } from '@/lib/middleware/auth';
 import { requireProfileRole, RoleError } from '@/lib/middleware/roles';
 import { AuthError } from '@/lib/middleware/auth';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { CreateSprintForm } from './CreateSprintForm';
-import { SprintManagement, type SprintRow } from './SprintManagement';
+import { AdminConsole } from './AdminConsole';
+import type { SprintRow } from './types';
 
 export default async function AdminPage() {
   let user;
@@ -41,55 +41,33 @@ export default async function AdminPage() {
   const nextSprintNumber = (sprintCount ?? 0) + 1;
   const sprints = (recentSprints ?? []) as unknown as SprintRow[];
 
+  const metrics = [
+    { label: 'Sprints', value: sprintCount ?? 0 },
+    { label: 'Submissions', value: submissionCount ?? 0 },
+    { label: 'Judges', value: judgeCount ?? 0 },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#050507] pt-14 pb-20 text-[#F5F5F7]">
-      <div className="mx-auto max-w-6xl px-6 py-10 space-y-10">
+    <div className="mx-auto max-w-7xl px-5 pb-24 pt-28 sm:px-8">
+      <header className="flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-signal">Admin console</p>
+          <h1 className="mt-2 font-poster text-[clamp(2.75rem,6vw,5rem)] uppercase leading-[0.9]">Arena operations</h1>
+          <p className="mt-3 text-base text-smoke">Welcome back, {profile?.display_name ?? 'admin'}.</p>
+        </div>
 
-        {/* ── Header ── */}
-        <header>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#7C5CFF]">Admin Console</p>
-          <h1 className="mt-2 font-display text-4xl font-black text-white">Arena Operations</h1>
-          <p className="mt-1 text-sm text-[#737380]">Welcome back, {profile?.display_name ?? 'admin'}.</p>
-        </header>
-
-        {/* ── Metrics ── */}
-        <div className="grid grid-cols-3 gap-4">
-          {[
-            { label: 'Sprints', value: sprintCount ?? 0, glow: '#7C5CFF' },
-            { label: 'Submissions', value: submissionCount ?? 0, glow: '#45B7D1' },
-            { label: 'Judges', value: judgeCount ?? 0, glow: '#FFD700' },
-          ].map(({ label, value, glow }) => (
-            <div key={label} className="relative overflow-hidden rounded-xl border border-[#1C1C26] bg-[#0A0A0F] p-6">
-              <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: glow }} />
-              <p className="font-mono text-xs uppercase tracking-widest text-[#737380]">{label}</p>
-              <p className="mt-3 font-display text-4xl font-black text-white">{value.toLocaleString()}</p>
+        <dl className="grid grid-cols-3 gap-3 sm:gap-4">
+          {metrics.map(({ label, value }) => (
+            <div key={label} className="min-w-[6.5rem] rounded-xl border border-white/15 px-4 py-3">
+              <dt className="font-mono text-[10px] uppercase tracking-[0.2em] text-smoke">{label}</dt>
+              <dd className="mt-1 font-poster text-4xl leading-none tabular-nums">{value.toLocaleString()}</dd>
             </div>
           ))}
-        </div>
+        </dl>
+      </header>
 
-        {/* ── Two-column: Create Sprint + Recent Sprints ── */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-
-          {/* ── Create Sprint Form ── */}
-          <div className="xl:col-span-7">
-            <div className="rounded-xl border border-[#1C1C26] bg-[#0A0A0F] overflow-hidden">
-              <div className="flex items-center gap-3 border-b border-[#1C1C26] px-6 py-4 bg-[#101017]">
-                <div className="h-2 w-2 rounded-full bg-[#7C5CFF]" />
-                <h2 className="font-display text-base font-bold text-white">Create New Sprint</h2>
-                <span className="ml-auto font-mono text-xs text-[#737380]">Sprint #{nextSprintNumber}</span>
-              </div>
-              <div className="p-6">
-                <CreateSprintForm nextSprintNumber={nextSprintNumber} />
-              </div>
-            </div>
-          </div>
-
-          {/* ── Sprint Management panel ── */}
-          <div className="xl:col-span-5">
-            <SprintManagement sprints={sprints} />
-          </div>
-
-        </div>
+      <div className="mt-12">
+        <AdminConsole sprints={sprints} nextSprintNumber={nextSprintNumber} />
       </div>
     </div>
   );

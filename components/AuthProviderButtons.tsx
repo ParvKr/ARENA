@@ -33,11 +33,9 @@ export function AuthProviderButtons({ next = '/sprint' }: AuthProviderButtonsPro
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-2 gap-3">
-        <ProviderButton provider="google" pendingProvider={pendingProvider} onClick={signIn} />
-        <ProviderButton provider="apple" pendingProvider={pendingProvider} onClick={signIn} />
-      </div>
-      {error && <p className="text-center text-xs text-arena-red" role="alert">{error}</p>}
+      <ProviderButton provider="google" pendingProvider={pendingProvider} onClick={signIn} />
+      <ProviderButton provider="apple" pendingProvider={pendingProvider} onClick={signIn} />
+      {error && <p className="text-center text-sm font-medium text-signal" role="alert">{error}</p>}
     </div>
   );
 }
@@ -51,7 +49,7 @@ function ProviderButton({ provider, pendingProvider, onClick }: { provider: Prov
       type="button"
       disabled={pendingProvider !== null}
       onClick={() => void onClick(provider)}
-      className="flex items-center justify-center gap-2 rounded-md border border-arena-border bg-arena-surface px-3 py-3 text-sm font-semibold text-arena-offwhite transition hover:border-arena-gray hover:bg-arena-card disabled:cursor-wait disabled:opacity-60"
+      className="flex w-full items-center justify-center gap-3 rounded-full border border-white/25 px-4 py-3.5 font-display text-sm font-semibold text-chalk transition-colors hover:border-chalk hover:bg-white/10 disabled:cursor-wait disabled:opacity-60"
     >
       {provider === 'google' ? <GoogleIcon /> : <AppleIcon />}
       {isPending ? 'Connecting…' : `Continue with ${label}`}

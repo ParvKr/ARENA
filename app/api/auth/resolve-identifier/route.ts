@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     if (profileError || !profile) {
       return NextResponse.json(
-        { error: 'Handle resolution mapping failed.' },
+        { error: 'Incorrect username, email or password.' },
         { status: 404 }
       );
     }
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     if (userError || !userData?.user?.email) {
       return NextResponse.json(
-        { error: 'Profile authorization path unresolvable.' },
+        { error: 'Incorrect username, email or password.' },
         { status: 404 }
       );
     }

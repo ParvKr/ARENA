@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
 import { z } from 'zod';
 import useSWR from 'swr';
 import { useToast } from '@/lib/store';
 import { AuthProviderButtons } from '@/components/AuthProviderButtons';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { AuthField, PasswordField, authPrimaryButtonClass } from '@/components/auth/AuthField';
 
 const SignupSchema = z.object({
   display_name: z
@@ -26,10 +28,10 @@ const SignupSchema = z.object({
 
 type SignupInput = z.infer<typeof SignupSchema>;
 
-// FIXED: Aligned properties to cleanly capture root-level parameters
+// The route responds with { data: { available, username } | null, error }.
 interface AvailabilityResponse {
-  available: boolean;
-  error?: string;
+  data: { available: boolean; username: string } | null;
+  error: { message: string; code?: string } | null;
 }
 
 const fetcher = (url: string) => fetch(url).then((res) => {
@@ -85,8 +87,7 @@ export default function SignupPage() {
     }
   );
 
-  // FIXED: Accessing property at the root instead of using an invalid intermediate structural path wrapper
-  const usernameAvailable = usernameData?.available;
+  const usernameAvailable = usernameData?.data?.available;
 
   async function onSubmit(data: SignupInput) {
     setLoading(true);
@@ -118,140 +119,88 @@ export default function SignupPage() {
     }
   }
 
+  const usernameReady = rawUsernameInput.trim().length >= 3;
+  const displayNameInput = useWatch({ control, name: 'display_name' }) ?? '';
+  const stamp = usernameReady && !isValidating ? (usernameAvailable === true ? 'cleared' : usernameAvailable === false ? 'taken' : null) : null;
+  const submitDisabled = loading || usernameAvailable === false || isValidating || !usernameReady;
+
   return (
-    <div className="min-h-screen bg-arena-bg flex items-center justify-center px-4 selection:bg-arena-red selection:text-white">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="w-full max-w-md space-y-8 bg-arena-card p-8 rounded-xl border border-arena-border/40 shadow-2xl backdrop-blur-md"
-      >
-        <div className="text-center space-y-2">
-          <h1 className="font-display font-black text-5xl tracking-tighter text-arena-red">
-            ARENA
-          </h1>
-          <p className="text-sm text-arena-gray">Forge your digital creative credential</p>
-        </div>
+    <AuthShell
+      badge={{ mode: 'signup', name: displayNameInput, handle: rawUsernameInput, stamp: stamp }}
+      blurb="Free to join. Browse any brief without an account; make one to submit your work and earn a public rank."
+    >
+      <h1 className="font-poster text-4xl uppercase leading-none lg:text-5xl">Create your account</h1>
+      <p className="mt-3 text-base text-smoke">Forge your creative credential.</p>
 
+      <div className="mt-8">
         <AuthProviderButtons />
+      </div>
 
-        <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-arena-gray before:h-px before:flex-1 before:bg-arena-border after:h-px after:flex-1 after:bg-arena-border">
-          or create with email
-        </div>
+      <div className="my-7 flex items-center gap-4 text-sm text-smoke before:h-px before:flex-1 before:bg-white/15 after:h-px after:flex-1 after:bg-white/15">
+        or create with email
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Display Name Row */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-arena-gray">
-              Display Name
-            </label>
-            <input
-              {...register('display_name')}
-              type="text"
-              placeholder="Your professional creative handle"
-              className="w-full bg-arena-surface border border-arena-border rounded-md p-3 text-arena-offwhite placeholder-arena-gray/30 text-sm focus:border-arena-red focus:outline-none focus:ring-1 focus:ring-arena-red/20 transition-all duration-200"
-            />
-            {errors.display_name && (
-              <p className="text-xs font-medium text-arena-red mt-1">{errors.display_name.message}</p>
-            )}
-          </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+        <AuthField
+          label="Display name"
+          type="text"
+          autoComplete="name"
+          placeholder="Your name or creative handle"
+          error={errors.display_name?.message}
+          {...register('display_name')}
+        />
+        <AuthField
+          label="Email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@domain.com"
+          error={errors.email?.message}
+          {...register('email')}
+        />
+        <PasswordField
+          label="Password"
+          autoComplete="new-password"
+          hint="At least 8 characters."
+          error={errors.password?.message}
+          {...register('password')}
+        />
+        <AuthField
+          label="Username"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="none"
+          spellCheck={false}
+          placeholder="handle"
+          hint="Lowercase letters, numbers and underscores. This is your public handle."
+          error={errors.username?.message}
+          className="font-mono"
+          adornment={
+            usernameReady ? (
+              <span aria-live="polite" className="select-none font-mono text-xs">
+                {isValidating ? (
+                  <span className="animate-pulse text-smoke">checking…</span>
+                ) : usernameAvailable === true ? (
+                  <span className="rounded bg-white/10 px-2 py-1 font-bold text-chalk">✓ available</span>
+                ) : usernameAvailable === false ? (
+                  <span className="rounded bg-signal px-2 py-1 font-bold text-chalk">✕ taken</span>
+                ) : null}
+              </span>
+            ) : null
+          }
+          {...register('username')}
+        />
 
-          {/* Email Row */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-arena-gray">
-              Email Address
-            </label>
-            <input
-              {...register('email')}
-              type="email"
-              placeholder="you@domain.com"
-              className="w-full bg-arena-surface border border-arena-border rounded-md p-3 text-arena-offwhite placeholder-arena-gray/30 text-sm focus:border-arena-red focus:outline-none focus:ring-1 focus:ring-arena-red/20 transition-all duration-200"
-            />
-            {errors.email && (
-              <p className="text-xs font-medium text-arena-red mt-1">{errors.email.message}</p>
-            )}
-          </div>
+        <button type="submit" disabled={submitDisabled} className={`${authPrimaryButtonClass} mt-2`}>
+          {loading ? 'Creating account…' : 'Create account'}
+        </button>
+      </form>
 
-          {/* Password Row */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-arena-gray">
-              Secure Password
-            </label>
-            <input
-              {...register('password')}
-              type="password"
-              placeholder="••••••••"
-              className="w-full bg-arena-surface border border-arena-border rounded-md p-3 text-arena-offwhite placeholder-arena-gray/30 text-sm focus:border-arena-red focus:outline-none focus:ring-1 focus:ring-arena-red/20 transition-all duration-200"
-            />
-            {errors.password && (
-              <p className="text-xs font-medium text-arena-red mt-1">{errors.password.message}</p>
-            )}
-          </div>
-
-          {/* Username Validation Row */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-arena-gray">
-              Unique Handle (Username)
-            </label>
-            <div className="relative">
-              <input
-                {...register('username')}
-                type="text"
-                placeholder="handle"
-                className="w-full bg-arena-surface border border-arena-border rounded-md p-3 pr-24 text-arena-offwhite placeholder-arena-gray/30 text-sm font-mono focus:border-arena-red focus:outline-none focus:ring-1 focus:ring-arena-red/20 transition-all duration-200"
-              />
-              
-              {rawUsernameInput.trim().length >= 3 && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center select-none text-xs font-mono">
-                  {/* FIXED: Checks explicit SWR pipeline fetching states first to show text fallback */}
-                  {isValidating ? (
-                    <span className="text-arena-gray animate-pulse">checking...</span>
-                  ) : (
-                    <>
-                      {usernameAvailable === true && (
-                        <span className="text-arena-green font-bold flex items-center gap-1 bg-arena-green/10 px-2 py-1 rounded">
-                          ✓ clear
-                        </span>
-                      )}
-                      {usernameAvailable === false && (
-                        <span className="text-arena-red font-bold flex items-center gap-1 bg-arena-red/10 px-2 py-1 rounded">
-                          ✕ taken
-                        </span>
-                      )}
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-            {errors.username && (
-              <p className="text-xs font-medium text-arena-red mt-1">{errors.username.message}</p>
-            )}
-          </div>
-
-          {/* Form Action Controller Button */}
-          <button
-            type="submit"
-            disabled={loading || usernameAvailable === false || isValidating || rawUsernameInput.trim().length < 3}
-            className={`w-full py-3.5 rounded-md font-display font-bold text-base transition-all duration-200 transform ${
-              loading || usernameAvailable === false || isValidating || rawUsernameInput.trim().length < 3
-                ? 'bg-arena-surface border border-arena-border text-arena-gray/40 cursor-not-allowed'
-                : 'bg-arena-red text-white hover:bg-red-600 active:scale-[0.99] hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]'
-            }`}
-          >
-            {loading ? 'Creating account...' : 'Create account'}
-          </button>
-        </form>
-
-        <p className="text-center text-xs text-arena-gray pt-2">
-          Already have an active registration?{' '}
-          <a
-            href="/signin"
-            className="text-arena-cyan font-semibold transition-colors duration-150 hover:text-cyan-400 hover:underline"
-          >
-            Sign in here
-          </a>
-        </p>
-      </motion.div>
-    </div>
+      <p className="mt-8 text-center text-base text-smoke">
+        Already have an account?{' '}
+        <Link href="/signin" className="font-semibold text-chalk underline decoration-signal decoration-2 underline-offset-4 hover:text-signal">
+          Sign in
+        </Link>
+      </p>
+    </AuthShell>
   );
 }

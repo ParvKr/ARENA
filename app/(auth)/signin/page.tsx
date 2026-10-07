@@ -2,15 +2,17 @@
 'use client';
 
 import { Suspense, useState } from 'react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
 
 import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 import { useArenaStore } from '@/lib/store';
 import { AuthProviderButtons } from '@/components/AuthProviderButtons';
+import { AuthShell } from '@/components/auth/AuthShell';
+import { AuthField, PasswordField, authPrimaryButtonClass } from '@/components/auth/AuthField';
 
 const SignInSchema = z.object({
   identifier: z
@@ -22,6 +24,21 @@ const SignInSchema = z.object({
 });
 
 type SignInFormValues = z.infer<typeof SignInSchema>;
+
+/** One wording for "no such username" and "wrong password", so sign-in can't be used to probe for valid usernames. */
+const INVALID_LOGIN = 'Incorrect username, email or password.';
+
+/** A failure the user can act on. These are shown to them, never logged as crashes. */
+class ExpectedAuthError extends Error {}
+
+function describeAuthError(error: { code?: string | undefined; status?: number | undefined }): ExpectedAuthError | null {
+  if (error.code === 'invalid_credentials') return new ExpectedAuthError(INVALID_LOGIN);
+  if (error.code === 'email_not_confirmed') return new ExpectedAuthError('Confirm your email first, then sign in.');
+  if (error.status === 429 || error.code === 'over_request_rate_limit') {
+    return new ExpectedAuthError('Too many attempts. Wait a minute and try again.');
+  }
+  return null;
+}
 
 export default function SignInPage() {
   return (
@@ -38,18 +55,24 @@ function SignInForm() {
 
   const next = getSafeNextPath(searchParams.get('next'));
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [granted, setGranted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<SignInFormValues>({
     resolver: zodResolver(SignInSchema),
     mode: 'onTouched', // Restored dynamic validation tracing
   });
 
+  const identifierValue = (useWatch({ control, name: 'identifier' }) ?? '').trim();
+
   async function onSubmit(data: SignInFormValues) {
     setIsSubmitting(true);
+    setFormError(null);
     const cleanIdentifier = data.identifier.trim().toLowerCase();
     let targetEmail = cleanIdentifier;
 
@@ -71,10 +94,18 @@ function SignInForm() {
           }),
         });
 
+        if (resolveRes.status === 404 || resolveRes.status === 400) {
+          // Unknown (or malformed) username: an expected outcome, not a crash.
+          throw new ExpectedAuthError(INVALID_LOGIN);
+        }
+        if (resolveRes.status === 429) {
+          throw new ExpectedAuthError('Too many attempts. Wait a minute and try again.');
+        }
+
         const resolveJson = await resolveRes.json();
 
-        if (!resolveRes.ok) {
-          throw new Error(resolveJson.error || 'Failed to resolve profile mapping data markers.');
+        if (!resolveRes.ok || !resolveJson.email) {
+          throw new Error(resolveJson.error || 'Failed to resolve username.');
         }
 
         targetEmail = resolveJson.email;
@@ -87,7 +118,7 @@ function SignInForm() {
       });
 
       if (authError) {
-        throw authError;
+        throw describeAuthError(authError) ?? authError;
       }
 
       if (!authData?.user) {
@@ -104,21 +135,26 @@ function SignInForm() {
         });
       }
 
+      // Let the badge flip to "access granted" before leaving the page.
+      setGranted(true);
+      await new Promise((resolve) => setTimeout(resolve, 900));
+
       // Hardened session validation routing sequence
       router.push(next);
       router.refresh();
     } catch (error) {
-      console.error('[SIGNIN_CRASH_RECOVERY]:', error);
-      const message = error instanceof Error ? error.message : 'Sign in failed';
+      let message: string;
+      if (error instanceof ExpectedAuthError) {
+        message = error.message;
+      } else {
+        // Something we didn't plan for: log it, but tell the user something plain.
+        console.error('[SIGNIN_UNEXPECTED]:', error);
+        message = 'Something went wrong on our side. Please try again.';
+      }
 
-      // Replaced legacy generic browser alert with global system toast channel
+      setFormError(message);
       if (addToast) {
-        addToast({
-          type: 'error',
-          message: message,
-          duration: 6000,
-          priority: 3,
-        });
+        addToast({ type: 'error', message, duration: 6000, priority: 3 });
       }
     } finally {
       setIsSubmitting(false);
@@ -126,99 +162,61 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen bg-arena-black flex items-center justify-center px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md bg-arena-card border border-arena-border rounded-2xl p-8 shadow-2xl"
-      >
-        <div className="space-y-2 mb-8">
-          <h1 className="font-display text-5xl font-black text-arena-red">
-            ARENA
-          </h1>
+    <AuthShell
+      badge={{ mode: 'signin', handle: identifierValue, stamp: granted ? 'granted' : null, locked: !granted }}
+      blurb="Pick up where you left off: your rank, your entries and your next brief."
+    >
+      <h1 className="font-poster text-4xl uppercase leading-none lg:text-5xl">Sign in</h1>
+      <p className="mt-3 text-base text-smoke">Welcome back, competitor.</p>
 
-          <p className="text-arena-gray">
-            Welcome back, competitor.
-            Please sign in.
-          </p>
-        </div>
-
+      <div className="mt-8">
         <AuthProviderButtons next={next} />
+      </div>
 
-        <div className="flex items-center gap-3 text-xs uppercase tracking-widest text-arena-gray before:h-px before:flex-1 before:bg-arena-border after:h-px after:flex-1 after:bg-arena-border">
-          or use email
-        </div>
+      <div className="my-7 flex items-center gap-4 text-sm text-smoke before:h-px before:flex-1 before:bg-white/15 after:h-px after:flex-1 after:bg-white/15">
+        or use email
+      </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
-        >
-          <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-arena-gray font-bold">
-              Username or Email Address
-            </label>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+        <AuthField
+          label="Username or email"
+          type="text"
+          autoComplete="username"
+          error={errors.identifier?.message}
+          {...register('identifier', { onChange: () => setFormError(null) })}
+        />
+        <PasswordField
+          label="Password"
+          autoComplete="current-password"
+          error={errors.password?.message}
+          {...register('password', { onChange: () => setFormError(null) })}
+        />
 
-            <input
-              {...register('identifier')}
-              type="text"
-              autoComplete="username"
-              className="w-full bg-arena-black border border-arena-border rounded-xl px-4 py-3 text-arena-offwhite outline-none focus:border-arena-red"
-            />
+        {formError && (
+          <p role="alert" className="rounded-xl border border-signal/60 bg-signal/10 px-4 py-3 text-sm font-medium text-chalk">
+            {formError}
+          </p>
+        )}
 
-            {errors.identifier && (
-              <p className="text-sm text-arena-red">
-                {errors.identifier.message}
-              </p>
-            )}
-          </div>
+        <button type="submit" disabled={isSubmitting} className={`${authPrimaryButtonClass} mt-2`}>
+          {isSubmitting ? 'Signing in…' : 'Sign in'}
+        </button>
+      </form>
 
-          <div className="space-y-2">
-            <label className="text-xs uppercase tracking-widest text-arena-gray font-bold">
-              Password
-            </label>
-
-            <input
-              {...register('password')}
-              type="password"
-              autoComplete="current-password"
-              className="w-full bg-arena-black border border-arena-border rounded-xl px-4 py-3 text-arena-offwhite outline-none focus:border-arena-red"
-            />
-
-            {errors.password && (
-              <p className="text-sm text-arena-red">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-4 rounded-xl font-display font-black text-lg bg-arena-red text-white hover:opacity-90 transition disabled:opacity-50"
-          >
-            {isSubmitting ? 'Signing In...' : 'Sign In'}
-          </button>
-        </form>
-
-        <div className="mt-8 text-center text-sm text-arena-gray">
-          New to ARENA?{' '}
-          <button
-            onClick={() => router.push('/signup')}
-            className="text-arena-cyan font-bold hover:underline"
-          >
-            Create an account
-          </button>
-        </div>
-      </motion.div>
-    </div>
+      <p className="mt-8 text-center text-base text-smoke">
+        New to Arena?{' '}
+        <Link href="/signup" className="font-semibold text-chalk underline decoration-signal decoration-2 underline-offset-4 hover:text-signal">
+          Create an account
+        </Link>
+      </p>
+    </AuthShell>
   );
 }
 
 function SignInFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-arena-black px-4">
-      <div className="h-130 w-full max-w-md animate-pulse rounded-2xl border border-arena-border bg-arena-card" />
+    <div className="flex min-h-svh items-center justify-center bg-void px-4">
+      <div className="h-[34rem] w-full max-w-md animate-pulse rounded-2xl bg-white/[0.04]" />
     </div>
   );
 }
