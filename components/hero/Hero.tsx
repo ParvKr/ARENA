@@ -9,10 +9,9 @@ import { ArenaBackdrop } from './ArenaBackdrop'
 import { HeroCursor } from './HeroCursor'
 import { HeroDock } from './HeroDock'
 import { HeroMarquee } from './HeroMarquee'
-import { JudgeStroke } from './JudgeStroke'
+import { HeroStats } from './HeroStats'
 import { ScrambleText } from './ScrambleText'
 import { EASE, useHeroPointer } from './shared'
-import { Stickers } from './Stickers'
 
 const WORDS = ['designers', 'writers', 'builders', 'creators', 'strategists']
 
@@ -65,7 +64,7 @@ export function Hero() {
   const reduce = useReducedMotion() ?? false
   const ref = useRef<HTMLElement>(null)
   const pointer = useHeroPointer(ref)
-  const { sprint } = useCurrentSprint()
+  const { sprint, entryCount } = useCurrentSprint()
 
   const [cursorLabel, setCursorLabel] = useState<string | null>(null)
   const [inside, setInside] = useState(false)
@@ -128,6 +127,7 @@ export function Hero() {
                 Real briefs from working agencies, judged blind by industry designers. Biweekly sprints
                 where top talent rises and wins real prizes.
               </p>
+              <HeroStats sprint={sprint} entryCount={entryCount} reduce={reduce} inline />
             </motion.div>
           </div>
         </div>
@@ -138,8 +138,7 @@ export function Hero() {
 
       <HeroMarquee reduce={reduce} />
 
-      <Stickers pointer={pointer} reduce={reduce} />
-      <JudgeStroke reduce={reduce} />
+      <HeroStats sprint={sprint} entryCount={entryCount} reduce={reduce} />
       <HeroCursor pointer={pointer} label={cursorLabel} visible={inside} />
     </section>
   )

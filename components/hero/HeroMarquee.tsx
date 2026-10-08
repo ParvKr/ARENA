@@ -1,6 +1,6 @@
 // components/hero/HeroMarquee.tsx
 // Red band that closes the hero. It crawls on its own and speeds up (and flips
-// direction) with scroll velocity.
+// direction) with scroll velocity. Pauses on hover and while off-screen.
 'use client'
 
 import { useRef } from 'react'
@@ -63,7 +63,8 @@ export function HeroMarquee({ reduce }: { reduce: boolean }) {
       aria-hidden
       onPointerEnter={() => (paused.current = true)}
       onPointerLeave={() => (paused.current = false)}
-      className="relative z-10 -mx-[5%] mt-8 mb-5 w-[110%] -rotate-[1.4deg] overflow-hidden bg-signal py-2.5 sm:mt-10 sm:py-3">
+      className="relative z-10 -mx-[5%] mb-5 mt-8 w-[110%] -rotate-[1.4deg] overflow-hidden bg-signal py-2.5 sm:mt-10 sm:py-3"
+    >
       <motion.div style={{ x, willChange: 'transform' }} className="flex w-max">
         {Array.from({ length: REPEATS }, (_, n) => (
           <div key={n} className="flex shrink-0">

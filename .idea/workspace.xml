@@ -4,41 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f88a369-2b0b-4622-9777-e5e8dac96fa9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/admin/CreateSprintForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/CreateSprintForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/admin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/admin/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/profile/check-username/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/profile/check-username/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/sprint/current/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/sprint/current/route.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/judge/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/judge/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/plans/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/plans/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/profile/[username]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/profile/[username]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/results/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/results/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/sprint/submit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/sprint/submit/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/LiveSprintCard.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/NavBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/SkillRank.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/StatsGrid.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/WelcomeRow.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/avatar.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/badge.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/card.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/dialog.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/dropdown-menu.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/input.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/progress.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/sonner.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/tabs.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/textarea.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/services/sprint.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/sprint.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/migrations/004_functions.sql" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/migrations/004_functions.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/supabase/migrations/005_publication_pipeline_functions.sql" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/migrations/005_publication_pipeline_functions.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.mjs" afterDir="false" />
-    </list>
+    <list default="true" id="5f88a369-2b0b-4622-9777-e5e8dac96fa9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,23 +22,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000038688944428" />
-      <entry key="MS500" value="1.189647843303252" />
-      <entry key="S2" value="2.5258398981861974" />
-      <entry key="S5" value="4.870504669379587" />
-      <entry key="S10" value="12.839043873860666" />
-      <entry key="S30" value="42.01468520895232" />
-      <entry key="S60" value="60.66357867471856" />
-      <entry key="M2" value="76.1225423754833" />
-      <entry key="M5" value="100.51027699688788" />
-      <entry key="M10" value="120.45727940164957" />
-      <entry key="M15" value="132.16776339310115" />
-      <entry key="M30" value="172.5706289367397" />
-      <entry key="H1" value="263.9118840271511" />
-      <entry key="H2" value="376.1432096718226" />
-      <entry key="H4" value="466.4352905691087" />
-      <entry key="D1" value="568.081849148553" />
-      <entry key="W1" value="588.5015710624186" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0" />
+      <entry key="S10" value="1.0" />
+      <entry key="S30" value="1.0" />
+      <entry key="S60" value="1.0" />
+      <entry key="M2" value="1.0000000000181362" />
+      <entry key="M5" value="1.0001735788644572" />
+      <entry key="M10" value="1.1608333077378008" />
+      <entry key="M15" value="2.7359178303343543" />
+      <entry key="M30" value="22.663746160045907" />
+      <entry key="H1" value="98.87312883743229" />
+      <entry key="H2" value="239.02665404827442" />
+      <entry key="H4" value="387.22411713276784" />
+      <entry key="D1" value="590.6214362896109" />
+      <entry key="W1" value="636.0625759223486" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -94,23 +60,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.0011100058563320362" />
-      <entry key="MS500" value="0.4422474048704111" />
-      <entry key="S2" value="2.2288784102005796" />
-      <entry key="S5" value="4.735160963733933" />
-      <entry key="S10" value="12.76399998632578" />
-      <entry key="S30" value="41.98430770898851" />
-      <entry key="S60" value="60.646900971359955" />
-      <entry key="M2" value="76.11345355061913" />
-      <entry key="M5" value="100.50575887253703" />
-      <entry key="M10" value="120.45456107499466" />
-      <entry key="M15" value="132.16578441388845" />
-      <entry key="M30" value="172.56946781991" />
-      <entry key="H1" value="263.91115384017843" />
-      <entry key="H2" value="376.1427531979308" />
-      <entry key="H4" value="466.4350247643724" />
-      <entry key="D1" value="568.081797655878" />
-      <entry key="W1" value="588.5015634974935" />
+      <entry key="MS100" value="0.6925547340554623" />
+      <entry key="MS500" value="0.9291606742509133" />
+      <entry key="S2" value="0.9817992705948825" />
+      <entry key="S5" value="0.9926795657513535" />
+      <entry key="S10" value="0.9963330596499111" />
+      <entry key="S30" value="0.9987761894486769" />
+      <entry key="S60" value="0.9993879073956603" />
+      <entry key="M2" value="0.9996939068694529" />
+      <entry key="M5" value="1.000051116977996" />
+      <entry key="M10" value="1.160767248906874" />
+      <entry key="M15" value="2.7358437031567857" />
+      <entry key="M30" value="22.663541193746056" />
+      <entry key="H1" value="98.87277748993262" />
+      <entry key="H2" value="239.02629282057555" />
+      <entry key="H4" value="387.2238482564959" />
+      <entry key="D1" value="590.6213724186002" />
+      <entry key="W1" value="636.0625662047942" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{

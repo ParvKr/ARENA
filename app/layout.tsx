@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono, Syne, Anton } from 'next/font/google';
+import { Instrument_Sans, JetBrains_Mono, Syne, Anton } from 'next/font/google';
 
 import { NavBar } from '@/components/NavBar';
 import ToastSystem from '@/components/ToastSystem';
@@ -14,7 +14,7 @@ const syne = Syne({
   display: 'swap',
 });
 
-const inter = Inter({
+const bodyFont = Instrument_Sans({
   subsets: ['latin'],
   variable: '--font-body',
   display: 'swap',
@@ -52,7 +52,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`dark ${syne.variable} ${inter.variable} ${jetbrains.variable} ${anton.variable}`}>
+    <html lang="en" data-scroll-behavior="smooth" className={`dark ${syne.variable} ${bodyFont.variable} ${jetbrains.variable} ${anton.variable}`}>
       <body className="bg-arena-bg text-arena-offwhite font-body antialiased">
         <AuthProvider>
           <Suspense fallback={<div className="h-14" />}>

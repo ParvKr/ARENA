@@ -128,18 +128,6 @@ infinite; }
   }
 }
 
-@keyframes heroFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
-}
-.hero-float {
-  animation: heroFloat var(--float-d, 5s) ease-in-out infinite;
-  will-change: transform;
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-float { animation: none; }
-}
-
 /* ── Auth: badge ─────────────────────────────────────── */
 /* Chrome/Safari autofill paints inputs pale blue; keep the dark theme */
 .auth-input:-webkit-autofill,
@@ -149,6 +137,18 @@ infinite; }
   caret-color: #ffffff;
   box-shadow: 0 0 0 1000px #141414 inset;
   transition: background-color 9999s ease-in-out 0s;
+}
+
+/* ── Hero video: hide the browser's own play glyph (we provide a button) ── */
+.hero-video::-webkit-media-controls,
+.hero-video::-webkit-media-controls-panel,
+.hero-video::-webkit-media-controls-play-button,
+.hero-video::-webkit-media-controls-start-playback-button,
+.hero-video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ── Reduced motion ──────────────────────────────────── */
